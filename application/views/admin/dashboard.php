@@ -13,7 +13,14 @@
         }
         .sidebar .nav-link {
             color: #ecf0f1;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            padding: 0.75rem 1rem;
             transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .sidebar .nav-link:hover {
             background: #2d4063;
@@ -25,45 +32,29 @@
         }
         .sidebar .nav-link i {
             color: #fff;
+            min-width: 22px;
+            text-align: center;
         }
-        .sidebar .nav-link.active, .sidebar .nav-link:focus, .sidebar .nav-link:hover {
-            background: #2994FF !important;
-            color: #fff !important;
+        .sidebar .nav-item {
+            margin-bottom: 2px;
         }
-        .sidebar .nav-link.active i, .sidebar .nav-link:focus i, .sidebar .nav-link:hover i {
-            color: #fff !important;
+        .sidebar h4, .sidebar small {
+            color: #fff;
         }
-        .sidebar .nav-link:active {
-            background: #1d2a3a !important;
+        .main-content {
+            background-color: #f8f9fa;
+            min-height: 100vh;
         }
-        .sidebar .nav-link {
-            padding: 10px 18px;
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
-        .sidebar .text-white {
-            color: #fff !important;
+        .btn-primary {
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
+            border: none;
         }
-        .sidebar .text-muted {
-            color: #b0b8c1 !important;
-        }
-        body {
-            background: #f8fafc;
-        }
-        /* Remove card border for cleaner look */
-        .card, .card-header {
-            border: none !important;
-            box-shadow: none !important;
-        }
-        .card-stats {
-            border-left: 4px solid #3498db;
-        }
-        .card-stats.success {
-            border-left-color: #27ae60;
-        }
-        .card-stats.warning {
-            border-left-color: #f39c12;
-        }
-        .card-stats.danger {
-            border-left-color: #e74c3c;
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
         }
     </style>
 </head>

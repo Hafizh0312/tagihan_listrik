@@ -39,7 +39,7 @@ class Penggunaan extends CI_Controller {
             $this->form_validation->set_rules('bulan', 'Bulan', 'required|numeric|greater_than[0]|less_than[13]');
             $this->form_validation->set_rules('tahun', 'Tahun', 'required|numeric|greater_than[2000]');
             $this->form_validation->set_rules('meter_awal', 'Meter Awal', 'required|numeric|greater_than_equal_to[0]');
-            $this->form_validation->set_rules('meter_akhir', 'Meter Akhir', 'required|numeric|greater_than[meter_awal]');
+            $this->form_validation->set_rules('meter_akhir', 'Meter Akhir', 'required|numeric|callback__cek_meter_akhir');
 
             if ($this->form_validation->run() == FALSE) {
                 $this->session->set_flashdata('error', validation_errors());
@@ -225,5 +225,18 @@ class Penggunaan extends CI_Controller {
         }
         
         $this->load->view('admin/penggunaan/by_customer', $data);
+    }
+
+    /**
+     * Callback untuk validasi Meter Akhir > Meter Awal
+     */
+    public function _cek_meter_akhir($meter_akhir) {
+        $meter_awal = $this->input->post('meter_awal');
+        if ($meter_akhir > $meter_awal) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('_cek_meter_akhir', 'Meter Akhir harus lebih besar dari Meter Awal.');
+            return FALSE;
+        }
     }
 } 

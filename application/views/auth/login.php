@@ -34,7 +34,7 @@
         }
         .form-control:focus {
             border-color: #3498db;
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+            /* box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25); */
         }
         .btn-login {
             background: linear-gradient(135deg,#22304a,rgb(227, 228, 231));
@@ -68,7 +68,7 @@
             margin-top: 0.25rem;
         }
         .login-panel, .card, .panel {
-            background: #ecf0f1;
+            background: #22304a;
             color: #ecf0f1;
             border-radius: 10px;
         }
@@ -85,9 +85,10 @@
             border: 1px solid #22304a;
         }
         .form-control:focus {
-            background: #22304a;
-            color: #fff;
+            background: transparent;
+            color: #000;
             border-color: #22304a;
+            box-shadow: none;
         }
         .text-primary {
             color: #22304a !important;

@@ -285,10 +285,6 @@
                                                    class="btn btn-sm btn-info" title="Detail">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="<?= base_url('admin/tagihan/print_bill/' . $t->tagihan_id) ?>" 
-                                                   class="btn btn-sm btn-secondary" title="Print" target="_blank">
-                                                    <i class="fas fa-print"></i>
-                                                </a>
                                                 <?php if ($t->status == 'Belum Lunas'): ?>
                                                 <a href="<?= base_url('admin/tagihan/update_status/' . $t->tagihan_id) ?>" 
                                                    class="btn btn-sm btn-success" title="Mark as Paid"

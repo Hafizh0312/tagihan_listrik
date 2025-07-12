@@ -77,13 +77,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/pelanggan') ?>">
+                            <a class="nav-link active" href="<?= base_url('admin/pelanggan') ?>">
                                 <i class="fas fa-users me-2"></i>
                                 Kelola Pelanggan
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="<?= base_url('admin/penggunaan') ?>">
+                            <a class="nav-link " href="<?= base_url('admin/penggunaan') ?>">
                                 <i class="fas fa-bolt me-2"></i>
                                 Kelola Penggunaan
                             </a>
