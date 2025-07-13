@@ -51,6 +51,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script>
@@ -91,6 +93,12 @@
                     }
                 });
             }
+
+            // Initialize Select2
+            initSelect2();
+
+            // Initialize usage calculator
+            initUsageCalculator();
         });
 
         // Form validation helper
@@ -124,6 +132,40 @@
             } else {
                 input.type = 'password';
                 icon.className = 'fas fa-eye';
+            }
+        }
+
+        // Initialize Select2 for usage form
+        function initSelect2() {
+            if ($.fn.select2) {
+                $('.select2').select2({
+                    width: '100%',
+                    placeholder: 'Pilih',
+                    allowClear: true
+                });
+            }
+        }
+
+        // Calculate total KWH for usage form
+        function initUsageCalculator() {
+            const meterAwal = document.getElementById('meter_awal');
+            const meterAkhir = document.getElementById('meter_ahir');
+            const totalKwh = document.getElementById('total_kwh');
+            
+            if (meterAwal && meterAkhir && totalKwh) {
+                function calculateTotal() {
+                    const awal = parseFloat(meterAwal.value) || 0;
+                    const akhir = parseFloat(meterAkhir.value) || 0;
+                    const total = akhir - awal;
+                    if (total >= 0) {
+                        totalKwh.value = total.toFixed(2);
+                    } else {
+                        totalKwh.value = '0.00';
+                    }
+                }
+                
+                meterAwal.addEventListener('input', calculateTotal);
+                meterAkhir.addEventListener('input', calculateTotal);
             }
         }
     </script>

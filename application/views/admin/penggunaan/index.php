@@ -66,7 +66,7 @@
                                 <td><?= $no++ ?></td>
                                 <td><?= $p->nama_pelanggan ?></td>
                                 <td><?= $p->nomor_kwh ?></td>
-                                <td><?= $p->bulan . ' ' . $p->tahun ?></td>
+                                <td><?= bulan_indo($p->bulan) . ' ' . $p->tahun ?></td>
                                 <td><?= number_format($p->meter_awal) ?></td>
                                 <td><?= number_format($p->meter_ahir) ?></td>
                                 <td><?= number_format($p->meter_ahir - $p->meter_awal) ?> KWH</td>

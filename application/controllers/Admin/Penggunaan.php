@@ -35,7 +35,12 @@ class Penggunaan extends CI_Controller {
             );
             
             if ($this->Penggunaan_model->insert($data)) {
-                $this->session->set_flashdata('success', 'Data penggunaan berhasil ditambahkan');
+                // Ambil id penggunaan terakhir (bisa dengan insert_id)
+                $penggunaan_id = $this->db->insert_id();
+                // Generate tagihan otomatis
+                $this->load->model('Tagihan_model');
+                $this->Tagihan_model->generate_tagihan($penggunaan_id);
+                $this->session->set_flashdata('success', 'Data penggunaan berhasil ditambahkan dan tagihan otomatis dibuat');
                 redirect('admin/penggunaan');
             } else {
                 $this->session->set_flashdata('error', 'Gagal menambahkan data penggunaan');

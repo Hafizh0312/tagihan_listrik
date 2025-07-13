@@ -64,6 +64,15 @@
                             <?php endif; ?>
                         </div>
                         <div class="form-group">
+                            <label for="confirm_password">Konfirmasi Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control <?= form_error('confirm_password') ? 'is-invalid' : '' ?>" id="confirm_password" name="confirm_password" required>
+                            <?php if (form_error('confirm_password')): ?>
+                                <div class="invalid-feedback">
+                                    <?= form_error('confirm_password') ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="form-group">
                             <label for="nomor_kwh">Nomor KWH <span class="text-danger">*</span></label>
                             <input type="text" class="form-control <?= form_error('nomor_kwh') ? 'is-invalid' : '' ?>" id="nomor_kwh" name="nomor_kwh" value="<?= set_value('nomor_kwh') ?>" required>
                             <?php if (form_error('nomor_kwh')): ?>

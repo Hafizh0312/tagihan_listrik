@@ -62,10 +62,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td width="40%"><strong>ID User:</strong></td>
-                                    <td><?= $user->id_user ?></td>
-                                </tr>
+                                
                                 <tr>
                                     <td><strong>Username:</strong></td>
                                     <td>
@@ -78,10 +75,7 @@
                                     <td><strong>Nama:</strong></td>
                                     <td><?= $user->nama_admin ?? $user->username ?></td>
                                 </tr>
-                                <tr>
-                                    <td><strong>Email:</strong></td>
-                                    <td>-</td>
-                                </tr>
+                                
                                 <tr>
                                     <td><strong>Role:</strong></td>
                                     <td>
@@ -100,18 +94,8 @@
                         </div>
                         <div class="col-md-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td width="40%"><strong>Login Terakhir:</strong></td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Dibuat:</strong></td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Diupdate:</strong></td>
-                                    <td>-</td>
-                                </tr>
+        
+                            
                             </table>
                         </div>
                     </div>

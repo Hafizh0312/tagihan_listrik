@@ -21,7 +21,7 @@
         </div>
     <?php endif; ?>
     <div class="card mb-4">
-        <div class="profile-header">
+        <!-- <div class="profile-header">
             <div class="profile-avatar">
                 <i class="fas fa-user"></i>
             </div>
@@ -37,7 +37,7 @@
                 }
                 ?>
             </small>
-        </div>
+        </div> -->
         <div class="card-body">
             <?php if (isset($pelanggan)): ?>
             <table class="table table-borderless profile-info-table mb-0">

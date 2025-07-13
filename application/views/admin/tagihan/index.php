@@ -91,38 +91,7 @@
     </div>
 
     <!-- Search and Filter -->
-    <div class="card border-0 shadow mb-4">
-        <div class="card-body">
-            <form action="<?= base_url('admin/tagihan/search') ?>" method="GET" class="row g-3">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" name="keyword" placeholder="Cari nama pelanggan..." value="<?= $this->input->get('keyword') ?>">
-                </div>
-                <div class="col-md-3">
-                    <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
-                        <option value="sudah_bayar" <?= $this->input->get('status') == 'sudah_bayar' ? 'selected' : '' ?>>Sudah Bayar</option>
-                        <option value="belum_bayar" <?= $this->input->get('status') == 'belum_bayar' ? 'selected' : '' ?>>Belum Bayar</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select name="bulan" class="form-select">
-                        <option value="">Semua Bulan</option>
-                        <?php for ($i = 1; $i <= 12; $i++): ?>
-                            <option value="<?= $i ?>" <?= $this->input->get('bulan') == $i ? 'selected' : '' ?>>
-                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fas fa-search me-2"></i>Cari
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    
     <!-- Tagihan Table -->
     <div class="card border-0 shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -163,7 +132,7 @@
                                     <small class="text-muted"><?= $t->nomor_kwh ?></small>
                                 </td>
                                 <td>
-                                    <?= $t->bulan . ' ' . $t->tahun ?>
+                                    <?= bulan_indo($t->bulan) . ' ' . $t->tahun ?>
                                 </td>
                                 <td><?= number_format($t->jumlah_meter) ?> KWH</td>
                                 <td>Rp <?= number_format($t->tarifperkwh ?? 0) ?></td>

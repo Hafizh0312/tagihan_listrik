@@ -23,79 +23,64 @@
     <div class="card border-0 shadow">
         <div class="card-header bg-primary text-white">
             <h6 class="m-0 font-weight-bold">
-                <i class="fas fa-plus me-2"></i>Tambah Data Penggunaan
+                Data Penggunaan
             </h6>
         </div>
         <div class="card-body">
             <form action="<?= base_url('admin/penggunaan/add') ?>" method="POST">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="id_pelanggan" class="form-label">Pelanggan <span class="text-danger">*</span></label>
-                            <select name="id_pelanggan" id="id_pelanggan" class="form-select" required>
-                                <option value="">Pilih Pelanggan</option>
-                                <?php foreach ($pelanggan as $p): ?>
-                                    <option value="<?= $p->id_pelanggan ?>" <?= set_select('id_pelanggan', $p->id_pelanggan) ?>>
-                                        <?= $p->nama_pelanggan ?> - <?= $p->nomor_kwh ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="bulan" class="form-label">Bulan <span class="text-danger">*</span></label>
-                                    <select name="bulan" id="bulan" class="form-select" required>
-                                        <option value="">Pilih Bulan</option>
-                                        <?php for ($i = 1; $i <= 12; $i++): ?>
-                                            <option value="<?= $i ?>" <?= set_select('bulan', $i) ?>>
-                                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="tahun" class="form-label">Tahun <span class="text-danger">*</span></label>
-                                    <select name="tahun" id="tahun" class="form-select" required>
-                                        <option value="">Pilih Tahun</option>
-                                        <?php for ($year = date('Y'); $year >= date('Y') - 5; $year--): ?>
-                                            <option value="<?= $year ?>" <?= set_select('tahun', $year) ?>>
-                                                <?= $year ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="id_pelanggan" class="form-label">Pelanggan <span class="text-danger">*</span></label>
+                        <select name="id_pelanggan" id="id_pelanggan" class="form-select select2" required>
+                            <option value="">Pilih Pelanggan</option>
+                            <?php foreach ($pelanggan as $p): ?>
+                                <option value="<?= $p->id_pelanggan ?>" <?= set_select('id_pelanggan', $p->id_pelanggan) ?>>
+                                    <?= $p->nama_pelanggan ?> - <?= $p->nomor_kwh ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="meter_awal" class="form-label">Meter Awal (KWH) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="meter_awal" name="meter_awal" 
-                                   value="<?= set_value('meter_awal') ?>" min="0" step="0.01" required>
-                            <div class="form-text">Masukkan angka meteran awal dalam KWH</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="meter_ahir" class="form-label">Meter Akhir (KWH) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="meter_ahir" name="meter_ahir" 
-                                   value="<?= set_value('meter_ahir') ?>" min="0" step="0.01" required>
-                            <div class="form-text">Masukkan angka meteran akhir dalam KWH</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Total KWH</label>
-                            <input type="text" class="form-control" id="total_kwh" readonly>
-                            <div class="form-text">Total penggunaan akan dihitung otomatis</div>
-                        </div>
+                    <div class="col-md-2">
+                        <label for="bulan" class="form-label">Bulan <span class="text-danger">*</span></label>
+                        <select name="bulan" id="bulan" class="form-select select2" required>
+                            <option value="">Pilih Bulan</option>
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option value="<?= $i ?>" <?= set_select('bulan', $i) ?>>
+                                    <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="tahun" class="form-label">Tahun <span class="text-danger">*</span></label>
+                        <select name="tahun" id="tahun" class="form-select select2" required>
+                            <option value="">Pilih Tahun</option>
+                            <?php for ($year = date('Y'); $year >= date('Y') - 5; $year--): ?>
+                                <option value="<?= $year ?>" <?= set_select('tahun', $year) ?>>
+                                    <?= $year ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="meter_awal" class="form-label">Meter Awal (KWH) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="meter_awal" name="meter_awal" value="<?= set_value('meter_awal') ?>" min="0" step="0.01" required>
+                        <div class="form-text">Meteran awal</div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="meter_ahir" class="form-label">Meter Akhir (KWH) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="meter_ahir" name="meter_ahir" value="<?= set_value('meter_ahir') ?>" min="0" step="0.01" required>
+                        <div class="form-text">Meteran akhir</div>
                     </div>
                 </div>
-
-                <div class="row">
+                <div class="row mt-3">
+                    <div class="col-md-4 offset-md-8">
+                        <label class="form-label">Total KWH</label>
+                        <input type="text" class="form-control" id="total_kwh" readonly>
+                        <div class="form-text">Total penggunaan akan dihitung otomatis</div>
+                    </div>
+                </div>
+                <div class="row mt-3">
                     <div class="col-12">
                         <div class="alert alert-info">
                             <h6><i class="fas fa-info-circle"></i> Informasi</h6>
@@ -107,7 +92,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -121,28 +105,5 @@
         </div>
     </div>
 </main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const meterAwal = document.getElementById('meter_awal');
-    const meterAkhir = document.getElementById('meter_ahir');
-    const totalKwh = document.getElementById('total_kwh');
-
-    function calculateTotal() {
-        const awal = parseFloat(meterAwal.value) || 0;
-        const akhir = parseFloat(meterAkhir.value) || 0;
-        const total = akhir - awal;
-        
-        if (total >= 0) {
-            totalKwh.value = total.toFixed(2);
-        } else {
-            totalKwh.value = '0.00';
-        }
-    }
-
-    meterAwal.addEventListener('input', calculateTotal);
-    meterAkhir.addEventListener('input', calculateTotal);
-});
-</script>
 
 <?php $this->load->view('admin/template/footer'); ?> 

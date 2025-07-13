@@ -8,6 +8,7 @@ class Tagihan extends CI_Controller {
         $this->load->model(['Tagihan_model', 'Penggunaan_model', 'Pelanggan_model']);
         $this->load->library('session');
         $this->load->helper('url');
+        $this->load->helper('php82_compatibility_helper');
         
         // Check if user is logged in and is admin
         if (!$this->session->userdata('logged_in') || $this->session->userdata('role') != 'admin') {
