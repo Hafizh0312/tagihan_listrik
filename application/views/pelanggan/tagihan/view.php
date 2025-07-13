@@ -69,45 +69,33 @@
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
-                        <h4 class="text-white">Admin Panel</h4>
+                        <h4 class="text-white">Pelanggan Panel</h4>
                         <small class="text-muted">Sistem Pembayaran Listrik</small>
                     </div>
                     
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/dashboard') ?>">
+                            <a class="nav-link" href="<?= base_url('pelanggan/dashboard') ?>">
                                 <i class="fas fa-tachometer-alt me-2"></i>
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/pelanggan') ?>">
-                                <i class="fas fa-users me-2"></i>
-                                Kelola Pelanggan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/penggunaan') ?>">
+                            <a class="nav-link" href="<?= base_url('pelanggan/penggunaan') ?>">
                                 <i class="fas fa-bolt me-2"></i>
-                                Kelola Penggunaan
+                                Penggunaan Listrik
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="<?= base_url('admin/tagihan') ?>">
+                            <a class="nav-link active" href="<?= base_url('pelanggan/tagihan') ?>">
                                 <i class="fas fa-file-invoice-dollar me-2"></i>
-                                Kelola Tagihan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/level') ?>">
-                                <i class="fas fa-cog me-2"></i>
-                                Kelola Tarif
+                                Tagihan Listrik
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a class="nav-link" href="<?= base_url('admin/dashboard/profile') ?>">
+                            <a class="nav-link" href="<?= base_url('pelanggan/profil') ?>">
                                 <i class="fas fa-user me-2"></i>
-                                Profil
+                                Profil Saya
                             </a>
                         </li>
                         <li class="nav-item">
@@ -125,7 +113,7 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Detail Tagihan Listrik</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <a href="<?= base_url('admin/tagihan') ?>" class="btn btn-secondary">
+                        <a href="<?= base_url('pelanggan/tagihan') ?>" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
@@ -162,14 +150,6 @@
                                         <td><?= $tagihan->tagihan_id ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Pelanggan:</strong></td>
-                                        <td><?= $tagihan->nama_pelanggan ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Alamat:</strong></td>
-                                        <td><?= $tagihan->alamat ?></td>
-                                    </tr>
-                                    <tr>
                                         <td><strong>Periode:</strong></td>
                                         <td><?= date('F Y', mktime(0, 0, 0, $tagihan->bulan, 1, $tagihan->tahun)) ?></td>
                                     </tr>
@@ -183,7 +163,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Tanggal Dibuat:</strong></td>
-                                                                                    <td><?= date('F Y', mktime(0, 0, 0, $tagihan->bulan, 1, $tagihan->tahun)) ?></td>
+                                        <td><?= date('d/m/Y H:i', strtotime($tagihan->created_at)) ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -274,7 +254,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-grid gap-2">
-                            <a href="<?= base_url('admin/tagihan/print_bill/' . $tagihan->tagihan_id) ?>" 
+                            <a href="<?= base_url('pelanggan/tagihan/print_bill/' . $tagihan->tagihan_id) ?>" 
                                class="btn btn-primary" target="_blank">
                                 <i class="fas fa-print me-2"></i>Print Tagihan
                             </a>
@@ -283,31 +263,52 @@
                     <div class="col-md-6">
                         <div class="d-grid gap-2">
                             <?php if ($tagihan->status == 'Belum Lunas'): ?>
-                            <a href="<?= base_url('admin/tagihan/update_status/' . $tagihan->tagihan_id) ?>" 
-                               class="btn btn-success"
-                               onclick="return confirm('Tandai tagihan ini sebagai lunas?')">
-                                <i class="fas fa-check me-2"></i>Mark as Paid
-                            </a>
+                            <div class="alert alert-warning mb-0">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Tagihan ini belum lunas. Silakan lakukan pembayaran.
+                            </div>
                             <?php else: ?>
-                            <button class="btn btn-success" disabled>
-                                <i class="fas fa-check me-2"></i>Sudah Lunas
-                            </button>
+                            <div class="alert alert-success mb-0">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Tagihan ini sudah lunas.
+                            </div>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <!-- Additional Actions -->
-                <div class="mt-3">
-                    <a href="<?= base_url('admin/tagihan/edit/' . $tagihan->tagihan_id) ?>" class="btn btn-warning">
-                        <i class="fas fa-edit me-2"></i>Edit Tagihan
-                    </a>
-                    <a href="<?= base_url('admin/tagihan/delete/' . $tagihan->tagihan_id) ?>" 
-                       class="btn btn-danger"
-                       onclick="return confirm('Yakin ingin menghapus tagihan ini?')">
-                        <i class="fas fa-trash me-2"></i>Hapus Tagihan
-                    </a>
+                <!-- Payment Information -->
+                <?php if ($tagihan->status == 'Belum Lunas'): ?>
+                <div class="card border-0 shadow mt-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-credit-card me-2"></i>Informasi Pembayaran
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Metode Pembayaran:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-money-bill-wave me-2"></i>Transfer Bank</li>
+                                    <li><i class="fas fa-credit-card me-2"></i>Kartu Kredit/Debit</li>
+                                    <li><i class="fas fa-mobile-alt me-2"></i>E-Wallet</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Rekening Pembayaran:</h6>
+                                <p><strong>Bank PLN</strong><br>
+                                No. Rek: 1234-5678-9012-3456<br>
+                                Atas Nama: PT PLN (Persero)</p>
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Catatan:</strong> Mohon transfer sesuai dengan nominal tagihan dan sertakan ID Tagihan (<?= $tagihan->tagihan_id ?>) pada keterangan transfer.
+                        </div>
+                    </div>
                 </div>
+                <?php endif; ?>
             </main>
         </div>
     </div>

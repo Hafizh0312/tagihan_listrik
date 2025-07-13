@@ -102,7 +102,7 @@
                             <a href="<?= base_url('admin/level') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
-                            <a href="<?= base_url('admin/level/edit/' . $level->level_id) ?>" class="btn btn-warning">
+                            <a href="<?= base_url('admin/level/edit/' . $level->id_tarif) ?>" class="btn btn-warning">
                                 <i class="fas fa-edit me-1"></i> Edit
                             </a>
                         </div>
@@ -137,7 +137,7 @@
                                         <table class="table table-borderless">
                                             <tr>
                                                 <td width="40%"><strong>ID Level:</strong></td>
-                                                <td><?= $level->level_id ?></td>
+                                                <td><?= $level->id_tarif ?></td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Level Daya:</strong></td>
@@ -151,7 +151,7 @@
                                                 <td><strong>Tarif per KWH:</strong></td>
                                                 <td>
                                                     <span class="badge bg-success fs-6">
-                                                        Rp <?= number_format($level->tarif_per_kwh, 0, ',', '.') ?>
+                                                        Rp <?= number_format($level->tarifperkwh, 0, ',', '.') ?>
                                                     </span>
                                                 </td>
                                             </tr>
@@ -163,8 +163,8 @@
                                             <p class="mb-2">Untuk penggunaan 100 KWH:</p>
                                             <p class="mb-0">
                                                 <strong>Total Tagihan:</strong><br>
-                                                Rp <?= number_format($level->tarif_per_kwh, 0, ',', '.') ?> × 100 KWH = 
-                                                <strong>Rp <?= number_format($level->tarif_per_kwh * 100, 0, ',', '.') ?></strong>
+                                                Rp <?= number_format($level->tarifperkwh, 0, ',', '.') ?> × 100 KWH = 
+                                                <strong>Rp <?= number_format($level->tarifperkwh * 100, 0, ',', '.') ?></strong>
                                             </p>
                                         </div>
                                     </div>

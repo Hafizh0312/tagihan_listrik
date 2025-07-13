@@ -20,7 +20,7 @@ class Level extends CI_Controller {
      */
     public function index() {
         $data['title'] = 'Kelola Level Daya';
-        $data['levels'] = $this->Level_model->get_all_level();
+        $data['levels'] = $this->Level_model->get_all_levels();
         $data['levels_with_customers'] = $this->Level_model->get_levels_with_customer_count();
         
         $this->load->view('admin/level/index', $data);
@@ -46,7 +46,7 @@ class Level extends CI_Controller {
                 } else {
                     $data_insert = array(
                         'daya' => $this->input->post('daya'),
-                        'tarif_per_kwh' => $this->input->post('tarif_per_kwh')
+                        'tarifperkwh' => $this->input->post('tarif_per_kwh')
                     );
                     
                     if ($this->Level_model->create_level($data_insert)) {
@@ -92,7 +92,7 @@ class Level extends CI_Controller {
                 } else {
                     $data_update = array(
                         'daya' => $this->input->post('daya'),
-                        'tarif_per_kwh' => $this->input->post('tarif_per_kwh')
+                        'tarifperkwh' => $this->input->post('tarif_per_kwh')
                     );
                     
                     if ($this->Level_model->update_level($id, $data_update)) {
@@ -207,7 +207,7 @@ class Level extends CI_Controller {
                                 if (!$this->Level_model->daya_exists($daya)) {
                                     $insert_data = array(
                                         'daya' => $daya,
-                                        'tarif_per_kwh' => $tarif
+                                        'tarifperkwh' => $tarif
                                     );
                                     
                                     if ($this->Level_model->create_level($insert_data)) {

@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?> - Sistem Pembayaran Listrik</title>
-    
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
         .sidebar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background: #22304a;
         }
         .sidebar .nav-link {
-            color: rgba(255,255,255,.8);
+            color: #ecf0f1;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 6px;
             padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            margin: 0.125rem 0;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
+        .sidebar .nav-link:hover {
+            background: #2d4063;
             color: #fff;
-            background-color: rgba(255,255,255,.1);
+        }
+        .sidebar .nav-link.active {
+            background: #2196f3;
+            color: #fff;
+        }
+        .sidebar .nav-link i {
+            color: #fff;
+            min-width: 22px;
+            text-align: center;
+        }
+        .sidebar .nav-item {
+            margin-bottom: 2px;
+        }
+        .sidebar h4, .sidebar small {
+            color: #fff;
         }
         .main-content {
             background-color: #f8f9fa;
@@ -35,11 +50,11 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
             border: none;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
         }
     </style>
 </head>
@@ -80,9 +95,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/level') ?>">
+                            <a class="nav-link" href="<?= base_url('admin/tarif') ?>">
                                 <i class="fas fa-cog me-2"></i>
                                 Kelola Tarif
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('admin/level') ?>">
+                                <i class="fas fa-user-shield me-2"></i>
+                                Kelola Level
                             </a>
                         </li>
                         <li class="nav-item mt-3">
@@ -113,13 +134,6 @@
                 </div>
 
                 <!-- Flash Messages -->
-                <?php if ($this->session->flashdata('success')): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?= $this->session->flashdata('success') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
                 <?php if ($this->session->flashdata('error')): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?= $this->session->flashdata('error') ?>
@@ -128,60 +142,77 @@
                 <?php endif; ?>
 
                 <!-- Form -->
-                <div class="card border-0 shadow">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Form Edit Pelanggan</h5>
+                    </div>
                     <div class="card-body">
-                        <form action="<?= base_url('admin/pelanggan/edit/' . $pelanggan->pelanggan_id) ?>" method="post">
+                        <form action="<?= base_url('admin/pelanggan/edit/' . $pelanggan->id_pelanggan) ?>" method="post">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="nama" class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nama" name="nama" value="<?= set_value('nama', $pelanggan->nama) ?>" required>
-                                        <?= form_error('nama', '<small class="text-danger">', '</small>') ?>
+                                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="username" name="username" 
+                                               value="<?= set_value('username', $pelanggan->username) ?>" required>
+                                        <?= form_error('username', '<small class="text-danger">', '</small>') ?>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="user_id" class="form-label">User Account <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="user_id" name="user_id" required>
-                                            <option value="">Pilih User Account</option>
-                                            <?php foreach ($users as $user): ?>
-                                                <option value="<?= $user->user_id ?>" <?= set_select('user_id', $user->user_id, ($pelanggan->user_id == $user->user_id)) ?>>
-                                                    <?= $user->username ?> - <?= $user->nama ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <?= form_error('user_id', '<small class="text-danger">', '</small>') ?>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password Baru <small class="text-muted">(kosongkan jika tidak ingin mengubah)</small></label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                        <?= form_error('password', '<small class="text-danger">', '</small>') ?>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
+                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                                        <?= form_error('confirm_password', '<small class="text-danger">', '</small>') ?>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="nama_pelanggan" class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" 
+                                               value="<?= set_value('nama_pelanggan', $pelanggan->nama_pelanggan) ?>" required>
+                                        <?= form_error('nama_pelanggan', '<small class="text-danger">', '</small>') ?>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="level_id" class="form-label">Level Daya <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="level_id" name="level_id" required>
-                                            <option value="">Pilih Level Daya</option>
-                                            <?php foreach ($levels as $level): ?>
-                                                <option value="<?= $level->level_id ?>" <?= set_select('level_id', $level->level_id, ($pelanggan->level_id == $level->level_id)) ?>>
-                                                    <?= $level->daya ?> Watt - Rp <?= number_format($level->tarif_per_kwh, 0, ',', '.') ?>/KWH
+                                        <label for="nomor_kwh" class="form-label">Nomor KWH <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="nomor_kwh" name="nomor_kwh" 
+                                               value="<?= set_value('nomor_kwh', $pelanggan->nomor_kwh) ?>" required>
+                                        <?= form_error('nomor_kwh', '<small class="text-danger">', '</small>') ?>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="id_tarif" class="form-label">Tarif Listrik <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="id_tarif" name="id_tarif" required>
+                                            <option value="">Pilih Tarif</option>
+                                            <?php foreach ($tarifs as $tarif): ?>
+                                                <option value="<?= $tarif->id_tarif ?>" 
+                                                        <?= set_select('id_tarif', $tarif->id_tarif, $pelanggan->id_tarif == $tarif->id_tarif) ?>>
+                                                    <?= $tarif->daya ?> VA - Rp <?= number_format($tarif->tarifperkwh, 0, ',', '.') ?>/KWH
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <?= form_error('level_id', '<small class="text-danger">', '</small>') ?>
+                                        <?= form_error('id_tarif', '<small class="text-danger">', '</small>') ?>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+
                                     <div class="mb-3">
                                         <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
-                                        <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?= set_value('alamat', $pelanggan->alamat) ?></textarea>
+                                        <textarea class="form-control" id="alamat" name="alamat" rows="4" required><?= set_value('alamat', $pelanggan->alamat) ?></textarea>
                                         <?= form_error('alamat', '<small class="text-danger">', '</small>') ?>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="<?= base_url('admin/pelanggan') ?>" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Batal
+                                </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i>Update Pelanggan
+                                    <i class="fas fa-save me-2"></i>Update
                                 </button>
                             </div>
                         </form>
@@ -191,7 +222,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

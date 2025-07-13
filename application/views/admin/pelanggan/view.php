@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?> - Sistem Pembayaran Listrik</title>
-    
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
         .sidebar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background: #22304a;
         }
         .sidebar .nav-link {
-            color: rgba(255,255,255,.8);
+            color: #ecf0f1;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 6px;
             padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            margin: 0.125rem 0;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
+        .sidebar .nav-link:hover {
+            background: #2d4063;
             color: #fff;
-            background-color: rgba(255,255,255,.1);
+        }
+        .sidebar .nav-link.active {
+            background: #2196f3;
+            color: #fff;
+        }
+        .sidebar .nav-link i {
+            color: #fff;
+            min-width: 22px;
+            text-align: center;
+        }
+        .sidebar .nav-item {
+            margin-bottom: 2px;
+        }
+        .sidebar h4, .sidebar small {
+            color: #fff;
         }
         .main-content {
             background-color: #f8f9fa;
@@ -35,11 +50,11 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
             border: none;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
         }
     </style>
 </head>
@@ -80,9 +95,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/level') ?>">
+                            <a class="nav-link" href="<?= base_url('admin/tarif') ?>">
                                 <i class="fas fa-cog me-2"></i>
                                 Kelola Tarif
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('admin/level') ?>">
+                                <i class="fas fa-user-shield me-2"></i>
+                                Kelola Level
                             </a>
                         </li>
                         <li class="nav-item mt-3">
@@ -106,135 +127,174 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Detail Pelanggan</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
+                        <a href="<?= base_url('admin/pelanggan/edit/' . $pelanggan->id_pelanggan) ?>" class="btn btn-warning me-2">
+                            <i class="fas fa-edit me-2"></i>Edit
+                        </a>
                         <a href="<?= base_url('admin/pelanggan') ?>" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
                 </div>
 
-                <!-- Flash Messages -->
-                <?php if ($this->session->flashdata('success')): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?= $this->session->flashdata('success') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($this->session->flashdata('error')): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?= $this->session->flashdata('error') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
                 <!-- Customer Information -->
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card border-0 shadow mb-4">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-user me-2"></i>Informasi Pelanggan
-                                </h5>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-user me-2"></i>Informasi Pelanggan</h5>
                             </div>
                             <div class="card-body">
                                 <table class="table table-borderless">
                                     <tr>
-                                        <td width="30%"><strong>Nama:</strong></td>
-                                        <td><?= $pelanggan->nama ?></td>
+                                        <td width="150"><strong>Nama Pelanggan</strong></td>
+                                        <td>: <?= $pelanggan->nama_pelanggan ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Alamat:</strong></td>
-                                        <td><?= $pelanggan->alamat ?></td>
+                                        <td><strong>Username</strong></td>
+                                        <td>: <?= $pelanggan->username ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Username:</strong></td>
-                                        <td><?= $pelanggan->username ?></td>
+                                        <td><strong>Nomor KWH</strong></td>
+                                        <td>: <span class="badge bg-info"><?= $pelanggan->nomor_kwh ?></span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Level Daya:</strong></td>
-                                        <td><?= $pelanggan->daya ?> Watt</td>
+                                        <td><strong>Alamat</strong></td>
+                                        <td>: <?= $pelanggan->alamat ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Tarif/KWH:</strong></td>
-                                        <td>Rp <?= number_format($pelanggan->tarif_per_kwh, 0, ',', '.') ?></td>
+                                        <td><strong>Daya Listrik</strong></td>
+                                        <td>: <span class="badge bg-primary"><?= $pelanggan->daya ?> VA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tarif per KWH</strong></td>
+                                        <td>: <span class="badge bg-success">Rp <?= number_format($pelanggan->tarifperkwh, 0, ',', '.') ?></span></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
-                        <div class="card border-0 shadow mb-4">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-chart-bar me-2"></i>Statistik Penggunaan
-                                </h5>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Statistik</h5>
                             </div>
                             <div class="card-body">
-                                <?php if (!empty($penggunaan)): ?>
-                                    <div class="row text-center">
-                                        <div class="col-6">
-                                            <h4 class="text-primary"><?= count($penggunaan) ?></h4>
-                                            <small class="text-muted">Total Penggunaan</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h4 class="text-success">
-                                                <?php 
-                                                $total_kwh = 0;
-                                                foreach ($penggunaan as $p) {
-                                                    $total_kwh += ($p->meter_akhir - $p->meter_awal);
-                                                }
-                                                echo number_format($total_kwh, 0);
-                                                ?>
-                                            </h4>
-                                            <small class="text-muted">Total KWH</small>
-                                        </div>
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <h4 class="text-primary"><?= count($penggunaan) ?></h4>
+                                        <small class="text-muted">Total Penggunaan</small>
                                     </div>
-                                <?php else: ?>
-                                    <p class="text-muted text-center mb-0">Belum ada data penggunaan</p>
-                                <?php endif; ?>
+                                    <div class="col-6">
+                                        <h4 class="text-warning"><?= count($tagihan) ?></h4>
+                                        <small class="text-muted">Total Tagihan</small>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <h4 class="text-success"><?= count(array_filter($tagihan, function($t) { return $t->status == 'sudah_bayar'; })) ?></h4>
+                                        <small class="text-muted">Tagihan Lunas</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 class="text-danger"><?= count(array_filter($tagihan, function($t) { return $t->status == 'belum_bayar'; })) ?></h4>
+                                        <small class="text-muted">Tagihan Belum Bayar</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Usage History -->
-                <div class="card border-0 shadow">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-history me-2"></i>Riwayat Penggunaan
-                        </h5>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Riwayat Penggunaan</h5>
                     </div>
                     <div class="card-body">
                         <?php if (!empty($penggunaan)): ?>
                             <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
+                                <table class="table table-striped">
+                                    <thead class="table-dark">
                                         <tr>
+                                            <th>No</th>
                                             <th>Periode</th>
                                             <th>Meter Awal</th>
                                             <th>Meter Akhir</th>
                                             <th>Total KWH</th>
-                                            <th>Total Tagihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($penggunaan as $p): ?>
+                                        <?php $no = 1; foreach ($penggunaan as $p): ?>
                                         <tr>
-                                            <td><?= $p->bulan ?>/<?= $p->tahun ?></td>
-                                            <td><?= number_format($p->meter_awal, 0) ?></td>
-                                            <td><?= number_format($p->meter_akhir, 0) ?></td>
-                                            <td><?= number_format($p->meter_akhir - $p->meter_awal, 0) ?></td>
-                                            <td>Rp <?= number_format(($p->meter_akhir - $p->meter_awal) * $pelanggan->tarif_per_kwh, 0, ',', '.') ?></td>
+                                            <td><?= $no++ ?></td>
+                                            <td><strong><?= $p->bulan ?> <?= $p->tahun ?></strong></td>
+                                            <td><?= number_format($p->meter_awal, 0, ',', '.') ?> KWH</td>
+                                            <td><?= number_format($p->meter_ahir, 0, ',', '.') ?> KWH</td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    <?= number_format($p->meter_ahir - $p->meter_awal, 0, ',', '.') ?> KWH
+                                                </span>
+                                            </td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         <?php else: ?>
-                            <div class="text-center text-muted py-4">
-                                <i class="fas fa-history fa-3x mb-3"></i>
-                                <p>Belum ada riwayat penggunaan</p>
+                            <div class="text-center py-4">
+                                <i class="fas fa-bolt fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">Belum ada data penggunaan</h5>
+                                <p class="text-muted">Pelanggan ini belum memiliki riwayat penggunaan listrik</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Bill History -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Riwayat Tagihan</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php if (!empty($tagihan)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Periode</th>
+                                            <th>Jumlah Meter</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $no = 1; foreach ($tagihan as $t): ?>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><strong><?= $t->bulan ?> <?= $t->tahun ?></strong></td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    <?= number_format($t->jumlah_meter, 0, ',', '.') ?> KWH
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <?php if ($t->status == 'sudah_bayar'): ?>
+                                                    <span class="badge bg-success">Lunas</span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-warning">Belum Bayar</span>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="text-center py-4">
+                                <i class="fas fa-file-invoice-dollar fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">Belum ada data tagihan</h5>
+                                <p class="text-muted">Pelanggan ini belum memiliki riwayat tagihan</p>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -243,7 +303,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

@@ -194,7 +194,7 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Tanggal Dibuat:</strong></td>
-                                                <td><?= date('d/m/Y H:i', strtotime($tagihan->created_at)) ?></td>
+                                                <td><?= date('F Y', mktime(0, 0, 0, $tagihan->bulan, 1, $tagihan->tahun)) ?></td>
                                             </tr>
                                         </table>
                                     </div>

@@ -187,10 +187,10 @@
                                                     </strong>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td><strong>Tanggal Dibuat:</strong></td>
-                                                <td><?= date('d/m/Y H:i', strtotime($tagihan->created_at)) ?></td>
-                                            </tr>
+                                                                                    <tr>
+                                            <td><strong>Periode:</strong></td>
+                                            <td><?= date('F Y', mktime(0, 0, 0, $tagihan->bulan, 1, $tagihan->tahun)) ?></td>
+                                        </tr>
                                         </table>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><?= date('d/m/Y H:i', strtotime($tagihan->created_at)) ?></td>
+                                                <td><?= date('F Y', mktime(0, 0, 0, $tagihan->bulan, 1, $tagihan->tahun)) ?></td>
                                                 <td>
                                                     <span class="badge <?= $tagihan->status == 'Lunas' ? 'bg-success' : 'bg-warning' ?>">
                                                         <?= $tagihan->status ?>

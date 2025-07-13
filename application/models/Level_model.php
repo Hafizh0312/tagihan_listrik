@@ -8,50 +8,56 @@ class Level_model extends CI_Model {
     }
 
     /**
-     * Get all levels
+     * Get all tarif levels
      */
-    public function get_all_level() {
-        $this->db->order_by('daya ASC');
-        return $this->db->get('level')->result();
+    public function get_all_levels() {
+        return $this->db->get('tarif')->result();
     }
 
     /**
-     * Get level by ID
+     * Get tarif level by ID
      */
-    public function get_level_by_id($level_id) {
-        $this->db->where('level_id', $level_id);
-        return $this->db->get('level')->row();
+    public function get_level_by_id($id_tarif) {
+        $this->db->where('id_tarif', $id_tarif);
+        return $this->db->get('tarif')->row();
     }
 
     /**
-     * Get level by daya
-     */
-    public function get_level_by_daya($daya) {
-        $this->db->where('daya', $daya);
-        return $this->db->get('level')->row();
-    }
-
-    /**
-     * Create new level
+     * Create new tarif level
      */
     public function create_level($data) {
-        return $this->db->insert('level', $data);
+        return $this->db->insert('tarif', $data);
     }
 
     /**
-     * Update level
+     * Update tarif level
      */
-    public function update_level($level_id, $data) {
-        $this->db->where('level_id', $level_id);
-        return $this->db->update('level', $data);
+    public function update_level($id_tarif, $data) {
+        $this->db->where('id_tarif', $id_tarif);
+        return $this->db->update('tarif', $data);
     }
 
     /**
-     * Delete level
+     * Delete tarif level
      */
-    public function delete_level($level_id) {
-        $this->db->where('level_id', $level_id);
-        return $this->db->delete('level');
+    public function delete_level($id_tarif) {
+        // Check if tarif is used by any pelanggan
+        $this->db->where('id_tarif', $id_tarif);
+        $count = $this->db->get('pelanggan')->num_rows();
+        
+        if ($count > 0) {
+            return false; // Cannot delete if used by pelanggan
+        }
+        
+        $this->db->where('id_tarif', $id_tarif);
+        return $this->db->delete('tarif');
+    }
+
+    /**
+     * Get tarif level count
+     */
+    public function get_level_count() {
+        return $this->db->count_all('tarif');
     }
 
     /**
@@ -59,53 +65,46 @@ class Level_model extends CI_Model {
      */
     public function daya_exists($daya, $exclude_id = null) {
         if ($exclude_id) {
-            $this->db->where('level_id !=', $exclude_id);
+            $this->db->where('id_tarif !=', $exclude_id);
         }
         $this->db->where('daya', $daya);
-        return $this->db->get('level')->num_rows() > 0;
+        return $this->db->get('tarif')->num_rows() > 0;
     }
 
     /**
-     * Get level count
+     * Get tarif levels with customer count
      */
-    public function get_level_count() {
-        return $this->db->count_all('level');
+    public function get_levels_with_customer_count() {
+        $this->db->select('tarif.*, COUNT(pelanggan.id_pelanggan) as customer_count');
+        $this->db->from('tarif');
+        $this->db->join('pelanggan', 'pelanggan.id_tarif = tarif.id_tarif', 'left');
+        $this->db->group_by('tarif.id_tarif');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Get average tarif
+     */
+    public function get_average_tarif() {
+        $this->db->select('AVG(tarifperkwh) as average_tarif');
+        $result = $this->db->get('tarif')->row();
+        return $result ? $result->average_tarif : 0;
+    }
+
+    /**
+     * Get tarif range
+     */
+    public function get_tarif_range() {
+        $this->db->select('MIN(tarifperkwh) as min_tarif, MAX(tarifperkwh) as max_tarif');
+        return $this->db->get('tarif')->row();
     }
 
     /**
      * Get unique daya values
      */
     public function get_unique_daya() {
-        $this->db->select('DISTINCT daya');
-        $this->db->order_by('daya ASC');
-        return $this->db->get('level')->result();
-    }
-
-    /**
-     * Get levels with customer count
-     */
-    public function get_levels_with_customer_count() {
-        $this->db->select('level.*, COUNT(pelanggan.pelanggan_id) as customer_count');
-        $this->db->from('level');
-        $this->db->join('pelanggan', 'pelanggan.level_id = level.level_id', 'left');
-        $this->db->group_by('level.level_id');
-        $this->db->order_by('level.daya ASC');
-        return $this->db->get()->result();
-    }
-
-    /**
-     * Get average tariff
-     */
-    public function get_average_tarif() {
-        $this->db->select('AVG(tarif_per_kwh) as avg_tarif');
-        return $this->db->get('level')->row();
-    }
-
-    /**
-     * Get min and max tariff
-     */
-    public function get_tarif_range() {
-        $this->db->select('MIN(tarif_per_kwh) as min_tarif, MAX(tarif_per_kwh) as max_tarif');
-        return $this->db->get('level')->row();
+        $this->db->select('daya, COUNT(*) as count');
+        $this->db->group_by('daya');
+        return $this->db->get('tarif')->result();
     }
 } 

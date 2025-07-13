@@ -12,19 +12,38 @@
     <!-- Custom CSS -->
     <style>
         .sidebar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background: #22304a;
         }
         .sidebar .nav-link {
-            color: rgba(255,255,255,.8);
+            color: #ecf0f1;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 6px;
             padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            margin: 0.125rem 0;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
+        .sidebar .nav-link:hover {
+            background: #2d4063;
             color: #fff;
-            background-color: rgba(255,255,255,.1);
+        }
+        .sidebar .nav-link.active {
+            background: #2196f3;
+            color: #fff;
+        }
+        .sidebar .nav-link i {
+            color: #fff;
+            min-width: 22px;
+            text-align: center;
+        }
+        .sidebar .nav-item {
+            margin-bottom: 2px;
+        }
+        .sidebar h4, .sidebar small {
+            color: #fff;
         }
         .main-content {
             background-color: #f8f9fa;
@@ -35,11 +54,11 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
             border: none;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
         }
     </style>
 </head>

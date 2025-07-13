@@ -91,10 +91,6 @@
                             <td>
                                 <a href="<?= base_url('pelanggan/tagihan/view/'.$row->tagihan_id) ?>" class="btn btn-sm btn-info" title="Lihat Detail">
                                     <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="<?= base_url('pelanggan/tagihan/print/'.$row->tagihan_id) ?>" class="btn btn-sm btn-primary" title="Cetak/Print" target="_blank">
-                                    <i class="fas fa-print"></i>
-                                </a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

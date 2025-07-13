@@ -5,13 +5,13 @@ class Dashboard extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(['User_model', 'Pelanggan_model', 'Penggunaan_model', 'Tagihan_model', 'Level_model']);
+        $this->load->model(['User_model', 'Pelanggan_model', 'Penggunaan_model', 'Tagihan_model', 'Tarif_model']);
         $this->load->library('session');
         $this->load->helper('url');
         
         // Check if user is logged in and is admin
-        if (!$this->session->userdata('logged_in') || $this->session->userdata('role') != 'admin') {
-            redirect('auth');
+        if (!$this->session->userdata('logged_in') || $this->session->userdata('role') !== 'admin') {
+            redirect('auth/login');
         }
     }
 
@@ -23,21 +23,21 @@ class Dashboard extends CI_Controller {
         $data['user'] = $this->session->userdata();
         
         // Get statistics
-        $data['total_pelanggan'] = $this->Pelanggan_model->get_pelanggan_count();
-        $data['total_penggunaan'] = $this->Penggunaan_model->get_penggunaan_count();
-        $data['total_tagihan'] = $this->Tagihan_model->get_tagihan_count();
-        $data['total_level'] = $this->Level_model->get_level_count();
+        $data['total_pelanggan'] = $this->Pelanggan_model->count_all();
+        $data['total_penggunaan'] = $this->Penggunaan_model->count_all();
+        $data['total_tagihan'] = $this->Tagihan_model->count_all();
+        $data['total_tarif'] = $this->Tarif_model->count_all();
         
         // Get recent data
-        $data['recent_pelanggan'] = $this->Pelanggan_model->get_all_pelanggan();
-        $data['recent_penggunaan'] = $this->Penggunaan_model->get_all_penggunaan();
-        $data['recent_tagihan'] = $this->Tagihan_model->get_all_tagihan();
+        $data['recent_pelanggan'] = $this->Pelanggan_model->get_all();
+        $data['recent_penggunaan'] = $this->Penggunaan_model->get_all();
+        $data['recent_tagihan'] = $this->Tagihan_model->get_all();
         
         // Get bill statistics
-        $data['bill_stats'] = $this->Tagihan_model->get_bill_statistics();
+        $data['bill_stats'] = $this->Tagihan_model->get_statistics();
         
         // Get usage statistics
-        $data['usage_stats'] = $this->Penggunaan_model->get_usage_statistics();
+        $data['usage_stats'] = $this->Penggunaan_model->get_statistics();
         
         $this->load->view('admin/dashboard', $data);
     }
@@ -47,7 +47,18 @@ class Dashboard extends CI_Controller {
      */
     public function profile() {
         $data['title'] = 'Profil Admin';
-        $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
+        $data['user'] = $this->User_model->get_by_id($this->session->userdata('user_id'));
+        
+        // Get user level name
+        if ($data['user']) {
+            $data['user']->role = $this->User_model->get_level_name($data['user']->id_level);
+        }
+        
+        // Get statistics for sidebar
+        $data['total_pelanggan'] = $this->Pelanggan_model->count_all();
+        $data['total_tagihan'] = $this->Tagihan_model->count_all();
+        $data['tagihan_lunas'] = $this->Tagihan_model->count_by_status('sudah_bayar');
+        $data['tagihan_belum_lunas'] = $this->Tagihan_model->count_by_status('belum_bayar');
         
         $this->load->view('admin/profile', $data);
     }
@@ -67,7 +78,7 @@ class Dashboard extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $this->session->set_flashdata('error', validation_errors());
             } else {
-                $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
+                $user = $this->User_model->get_by_id($this->session->userdata('user_id'));
                 
                 if (!$this->User_model->verify_password($this->input->post('current_password'), $user->password)) {
                     $this->session->set_flashdata('error', 'Password saat ini salah');
@@ -76,7 +87,7 @@ class Dashboard extends CI_Controller {
                         'password' => $this->User_model->hash_password($this->input->post('new_password'))
                     );
                     
-                    if ($this->User_model->update_user($this->session->userdata('user_id'), $data_update)) {
+                    if ($this->User_model->update($this->session->userdata('user_id'), $data_update)) {
                         $this->session->set_flashdata('success', 'Password berhasil diubah');
                     } else {
                         $this->session->set_flashdata('error', 'Gagal mengubah password');

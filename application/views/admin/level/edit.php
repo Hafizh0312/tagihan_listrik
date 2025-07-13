@@ -127,7 +127,7 @@
                                 <h6 class="m-0 font-weight-bold text-primary">Form Edit Level Daya</h6>
                             </div>
                             <div class="card-body">
-                                <form action="<?= base_url('admin/level/edit/' . $level->level_id) ?>" method="POST">
+                                <form action="<?= base_url('admin/level/edit/' . $level->id_tarif) ?>" method="POST">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -147,7 +147,7 @@
                                             <div class="mb-3">
                                                 <label for="tarif_per_kwh" class="form-label">Tarif per KWH (Rp) <span class="text-danger">*</span></label>
                                                 <input type="number" class="form-control <?= form_error('tarif_per_kwh') ? 'is-invalid' : '' ?>" 
-                                                       id="tarif_per_kwh" name="tarif_per_kwh" value="<?= set_value('tarif_per_kwh', $level->tarif_per_kwh) ?>" 
+                                                       id="tarif_per_kwh" name="tarif_per_kwh" value="<?= set_value('tarif_per_kwh', $level->tarifperkwh) ?>" 
                                                        placeholder="Contoh: 1352, 1444" min="1" step="0.01" required>
                                                 <?php if (form_error('tarif_per_kwh')): ?>
                                                     <div class="invalid-feedback">
@@ -167,7 +167,7 @@
                                                     <strong>Level Daya:</strong> <span id="preview-daya"><?= $level->daya ?></span> VA
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <strong>Tarif per KWH:</strong> Rp <span id="preview-tarif"><?= number_format($level->tarif_per_kwh, 0, ',', '.') ?></span>
+                                                    <strong>Tarif per KWH:</strong> Rp <span id="preview-tarif"><?= number_format($level->tarifperkwh, 0, ',', '.') ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,9 +195,9 @@
                                 <div class="alert alert-info">
                                     <h6><i class="fas fa-info-circle me-2"></i>Data Saat Ini</h6>
                                     <ul class="mb-0">
-                                        <li><strong>ID Level:</strong> <?= $level->level_id ?></li>
+                                        <li><strong>ID Level:</strong> <?= $level->id_tarif ?></li>
                                         <li><strong>Level Daya:</strong> <?= number_format($level->daya, 0, ',', '.') ?> VA</li>
-                                        <li><strong>Tarif per KWH:</strong> Rp <?= number_format($level->tarif_per_kwh, 0, ',', '.') ?></li>
+                                        <li><strong>Tarif per KWH:</strong> Rp <?= number_format($level->tarifperkwh, 0, ',', '.') ?></li>
                                     </ul>
                                 </div>
 

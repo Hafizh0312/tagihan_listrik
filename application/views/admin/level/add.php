@@ -9,29 +9,52 @@
     <style>
         .sidebar {
             min-height: 100vh;
-            background: #2c3e50;
+            background: #22304a;
         }
         .sidebar .nav-link {
             color: #ecf0f1;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            padding: 0.75rem 1rem;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .sidebar .nav-link:hover {
-            background: #34495e;
+            background: #2d4063;
             color: #fff;
         }
         .sidebar .nav-link.active {
-            background: #3498db;
+            background: #2196f3;
+            color: #fff;
         }
-        .card-stats {
-            border-left: 4px solid #3498db;
+        .sidebar .nav-link i {
+            color: #fff;
+            min-width: 22px;
+            text-align: center;
         }
-        .card-stats.success {
-            border-left-color: #27ae60;
+        .sidebar .nav-item {
+            margin-bottom: 2px;
         }
-        .card-stats.warning {
-            border-left-color: #f39c12;
+        .sidebar h4, .sidebar small {
+            color: #fff;
         }
-        .card-stats.danger {
-            border-left-color: #e74c3c;
+        .main-content {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #22304a 0%, #22304a 100%);
         }
     </style>
 </head>

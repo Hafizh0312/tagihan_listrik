@@ -313,7 +313,7 @@
                                                         <?= $t->status ?>
                                                     </span>
                                                 </td>
-                                                <td><?= date('d/m/Y H:i', strtotime($t->created_at)) ?></td>
+                                                <td><?= date('F Y', mktime(0, 0, 0, $t->bulan, 1, $t->tahun)) ?></td>
                                                 <td>
                                                     <a href="<?= base_url('admin/tagihan/view/' . $t->tagihan_id) ?>" 
                                                        class="btn btn-sm btn-info" title="Detail">
