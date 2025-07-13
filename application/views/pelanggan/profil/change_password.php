@@ -21,17 +21,26 @@
                         </div>
                     <?php endif; ?>
                     <form method="post" action="">
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="current_password" class="form-label">Password Saat Ini</label>
-                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                                <span class="input-group-text toggle-password" data-target="#current_password" style="cursor:pointer;"><i class="fa fa-eye"></i></span>
+                            </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="new_password" class="form-label">Password Baru</label>
-                            <input type="password" class="form-control" id="new_password" name="new_password" required minlength="6">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="new_password" name="new_password" required minlength="6">
+                                <span class="input-group-text toggle-password" data-target="#new_password" style="cursor:pointer;"><i class="fa fa-eye"></i></span>
+                            </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6">
+                                <span class="input-group-text toggle-password" data-target="#confirm_password" style="cursor:pointer;"><i class="fa fa-eye"></i></span>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="<?= base_url('pelanggan/profil') ?>" class="btn btn-secondary">Kembali</a>
@@ -43,4 +52,20 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.toggle-password').forEach(function(el) {
+        el.addEventListener('click', function() {
+            var target = document.querySelector(this.getAttribute('data-target'));
+            if (target.type === 'password') {
+                target.type = 'text';
+                this.querySelector('i').classList.remove('fa-eye');
+                this.querySelector('i').classList.add('fa-eye-slash');
+            } else {
+                target.type = 'password';
+                this.querySelector('i').classList.remove('fa-eye-slash');
+                this.querySelector('i').classList.add('fa-eye');
+            }
+        });
+    });
+</script>
 <?php $this->load->view('admin/footer'); ?> 

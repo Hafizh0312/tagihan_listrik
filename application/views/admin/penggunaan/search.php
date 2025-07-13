@@ -1,165 +1,140 @@
-<?php $this->load->view('admin/template/header'); ?>
-
-<?php $this->load->view('admin/template/sidebar'); ?>
-
-<!-- Main content -->
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2"><?= $title ?></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="<?= base_url('admin/penggunaan') ?>" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Penggunaan Listrik</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+    <style>
+        body { background: #f8f9fc; }
+        .dt-center { text-align: center; }
+        .table thead th, .table tfoot th { vertical-align: middle; }
+        .dataTables_wrapper .dataTables_filter input { margin-left: 0.5em; }
+        .dataTables_wrapper .dataTables_length select { margin-right: 0.5em; }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <div class="mb-4">
+        <h4 class="fw-bold">Column Search</h4>
+        <p class="mb-2 text-muted" style="max-width:600px;">DataTables with Column Search by Text Inputs. Fitur pencarian per kolom sangat berguna untuk mencari data secara spesifik di tabel. Semua fitur DataTables (search, sort, pagination, export) aktif dan tampilan Bootstrap 5.</p>
     </div>
-
-    <!-- Search Form -->
-    <div class="card border-0 shadow mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="card-title mb-0">
-                <i class="fas fa-search me-2"></i> Form Pencarian
-            </h5>
-        </div>
-        <div class="card-body">
-            <form action="<?= base_url('admin/penggunaan/search') ?>" method="GET" class="row g-3">
-                <div class="col-md-4">
-                    <label for="keyword" class="form-label">Kata Kunci</label>
-                    <input type="text" class="form-control" id="keyword" name="keyword" 
-                           placeholder="Cari nama pelanggan atau nomor meter..." 
-                           value="<?= $keyword ?>">
-                </div>
-                <div class="col-md-2">
-                    <label for="bulan" class="form-label">Bulan</label>
-                    <select name="bulan" id="bulan" class="form-select">
-                        <option value="">Semua Bulan</option>
-                        <?php for ($i = 1; $i <= 12; $i++): ?>
-                            <option value="<?= $i ?>" <?= $bulan == $i ? 'selected' : '' ?>>
-                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="tahun" class="form-label">Tahun</label>
-                    <select name="tahun" id="tahun" class="form-select">
-                        <option value="">Semua Tahun</option>
-                        <?php for ($year = date('Y'); $year >= date('Y') - 5; $year--): ?>
-                            <option value="<?= $year ?>" <?= $tahun == $year ? 'selected' : '' ?>>
-                                <?= $year ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Cari
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="d-grid">
-                        <a href="<?= base_url('admin/penggunaan/search') ?>" class="btn btn-outline-secondary">
-                            <i class="fas fa-refresh"></i> Reset
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Search Results -->
-    <div class="card border-0 shadow">
-        <div class="card-header bg-info text-white">
-            <h5 class="card-title mb-0">
-                <i class="fas fa-list me-2"></i> Hasil Pencarian
-                <?php if ($keyword || $bulan || $tahun): ?>
-                    <span class="badge bg-light text-dark ms-2"><?= count($penggunaan) ?> hasil</span>
-                <?php endif; ?>
-            </h5>
-        </div>
-        <div class="card-body">
-            <?php if ($keyword || $bulan || $tahun): ?>
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> 
-                    Menampilkan hasil pencarian untuk:
-                    <?php if ($keyword): ?>
-                        <strong>"<?= $keyword ?>"</strong>
-                    <?php endif; ?>
-                    <?php if ($bulan): ?>
-                        Bulan: <strong><?= date('F', mktime(0, 0, 0, $bulan, 1)) ?></strong>
-                    <?php endif; ?>
-                    <?php if ($tahun): ?>
-                        Tahun: <strong><?= $tahun ?></strong>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+    <div class="table-responsive bg-white p-3 rounded shadow-sm">
+        <table id="penggunaanTable" class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th class="dt-center">No</th>
+                    <th>Pelanggan</th>
+                    <th>No. KWH</th>
+                    <th>Periode</th>
+                    <th class="dt-center">Meter Awal</th>
+                    <th class="dt-center">Meter Akhir</th>
+                    <th class="dt-center">Total KWH</th>
+                    <th class="dt-center">Tarif/KWH</th>
+                    <th class="dt-center">Total Bayar</th>
+                    <th class="dt-center">Aksi</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari No" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Nama" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari KWH" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Periode" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Meter Awal" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Meter Akhir" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari KWH" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Tarif" /></th>
+                    <th><input type="text" class="form-control form-control-sm" placeholder="Cari Bayar" /></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                <?php if (empty($penggunaan)): ?>
+                    <tr>
+                        <td colspan="10" class="text-center">Tidak ada data yang ditemukan</td>
+                    </tr>
+                <?php else: ?>
+                    <?php $no = 1; foreach ($penggunaan as $p): ?>
                         <tr>
-                            <th>No</th>
-                            <th>Nama Pelanggan</th>
-                            <th>Nomor Meter</th>
-                            <th>Bulan/Tahun</th>
-                            <th>Meter Awal</th>
-                            <th>Meter Akhir</th>
-                            <th>Total KWH</th>
-                            <th>Tarif</th>
-                            <th>Total Bayar</th>
-                            <th>Aksi</th>
+                            <td class="dt-center"><?= $no++ ?></td>
+                            <td><?= $p->nama_pelanggan ?></td>
+                            <td><?= $p->nomor_kwh ?></td>
+                            <td><?= $p->bulan . ' ' . $p->tahun ?></td>
+                            <td class="dt-center"><?= number_format($p->meter_awal) ?></td>
+                            <td class="dt-center"><?= number_format($p->meter_ahir) ?></td>
+                            <td class="dt-center"><?= number_format($p->meter_ahir - $p->meter_awal) ?> KWH</td>
+                            <td class="dt-center">Rp <?= number_format($p->tarifperkwh ?? 0) ?></td>
+                            <td class="dt-center">Rp <?= number_format(($p->meter_ahir - $p->meter_awal) * ($p->tarifperkwh ?? 0)) ?></td>
+                            <td class="dt-center">
+                                <div class="btn-group" role="group">
+                                    <a href="<?= base_url('admin/penggunaan/view/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-info" title="Lihat">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="<?= base_url('admin/penggunaan/edit/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-warning" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="<?= base_url('admin/penggunaan/delete/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($penggunaan)): ?>
-                            <tr>
-                                <td colspan="10" class="text-center">
-                                    <div class="py-4">
-                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                                        <p class="text-muted">Tidak ada data yang ditemukan</p>
-                                        <?php if ($keyword || $bulan || $tahun): ?>
-                                            <p class="text-muted">Coba ubah kriteria pencarian Anda</p>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <?php $no = 1; ?>
-                            <?php foreach ($penggunaan as $p): ?>
-                                <tr>
-                                    <td><?= $no++ ?></td>
-                                    <td><?= $p->nama_pelanggan ?></td>
-                                    <td><?= $p->nomor_kwh ?></td>
-                                                                    <td><?= $p->bulan . ' ' . $p->tahun ?></td>
-                                <td><?= number_format($p->meter_awal) ?></td>
-                                <td><?= number_format($p->meter_ahir) ?></td>
-                                <td><?= number_format($p->meter_ahir - $p->meter_awal) ?> KWH</td>
-                                <td>Rp <?= number_format($p->tarifperkwh ?? 0) ?></td>
-                                <td>Rp <?= number_format(($p->meter_ahir - $p->meter_awal) * ($p->tarifperkwh ?? 0)) ?></td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="<?= base_url('admin/penggunaan/view/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-info" title="Lihat">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="<?= base_url('admin/penggunaan/edit/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-warning" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="<?= base_url('admin/penggunaan/delete/' . $p->id_penggunaan) ?>" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
-</main>
+</div>
 
-<?php $this->load->view('admin/template/footer'); ?> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#penggunaanTable tfoot th').each(function () {
+        var title = $(this).text();
+        if (title !== '') {
+            $(this).find('input').on('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+    });
+    var table = $('#penggunaanTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        responsive: true,
+        orderCellsTop: true,
+        fixedHeader: true
+    });
+    // Apply the search for each column
+    table.columns().every(function () {
+        var that = this;
+        $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+                that.search(this.value).draw();
+            }
+        });
+    });
+});
+</script>
+</body>
+</html> 

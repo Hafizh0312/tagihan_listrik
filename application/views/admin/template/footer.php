@@ -40,6 +40,18 @@
     <!-- Chart.js 2.9.4 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
+    <!-- DataTables JS & Buttons -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script>
         // Global JavaScript functions
@@ -114,6 +126,44 @@
                 icon.className = 'fas fa-eye';
             }
         }
+    </script>
+
+    <!-- Inisialisasi DataTables global untuk tabel dengan id #penggunaanTable -->
+    <script>
+    $(document).ready(function() {
+        if ($('#penggunaanTable').length) {
+            // Setup - add a text input to each footer cell
+            $('#penggunaanTable tfoot th').each(function () {
+                var title = $(this).text();
+                if (title !== '') {
+                    $(this).find('input').on('click', function(e) {
+                        e.stopPropagation();
+                    });
+                }
+            });
+            var table = $('#penggunaanTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true,
+                orderCellsTop: true,
+                fixedHeader: true
+            });
+            // Apply the search for each column
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        }
+    });
     </script>
 
 </body>

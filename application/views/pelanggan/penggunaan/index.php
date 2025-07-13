@@ -1,41 +1,12 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penggunaan Listrik Saya - Sistem Pembayaran Listrik</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f8fafc;
-        }
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(34,48,74,0.06);
-        }
-        .table thead {
-            background: #22304a;
-            color: #fff;
-        }
-        .table tbody tr:hover {
-            background: #e3f0ff;
-        }
-        .page-title {
-            font-weight: 700;
-            color: #22304a;
-        }
-    </style>
-</head>
-<body>
-<div class="container py-4">
+<?php $this->load->view('admin/header'); ?>
+<?php $this->load->view('admin/sidebar'); ?>
+<div class="container-fluid mt-4">
     <div class="row mb-4">
         <div class="col-12">
             <h2 class="page-title mb-1">Penggunaan Listrik Saya</h2>
             <p class="text-muted mb-0">Lihat riwayat penggunaan listrik Anda setiap bulan.</p>
         </div>
     </div>
-
     <!-- Flash Messages -->
     <?php if ($this->session->flashdata('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -49,7 +20,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     <?php endif; ?>
-
     <div class="card">
         <div class="card-header bg-white border-0">
             <h5 class="mb-0">Daftar Penggunaan Listrik</h5>
@@ -94,6 +64,4 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+<?php $this->load->view('admin/footer'); ?> 

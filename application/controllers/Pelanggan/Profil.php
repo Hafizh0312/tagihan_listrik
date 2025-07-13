@@ -85,6 +85,7 @@ class Profil extends CI_Controller {
             $this->form_validation->set_rules('current_password', 'Password Saat Ini', 'required');
             $this->form_validation->set_rules('new_password', 'Password Baru', 'required|min_length[6]');
             $this->form_validation->set_rules('confirm_password', 'Konfirmasi Password', 'required|matches[new_password]');
+            $this->form_validation->set_message('matches', 'Konfirmasi Password harus sama dengan Password Baru.');
 
             if ($this->form_validation->run() == FALSE) {
                 $this->session->set_flashdata('error', validation_errors());
@@ -98,8 +99,9 @@ class Profil extends CI_Controller {
                         'password' => $this->User_model->hash_password($this->input->post('new_password'))
                     );
                     
-                    if ($this->User_model->update_user($this->session->userdata('user_id'), $data_update)) {
+                    if ($this->User_model->update_pelanggan($this->session->userdata('user_id'), $data_update)) {
                         $this->session->set_flashdata('success', 'Password berhasil diubah');
+                        redirect('pelanggan/profil/change_password');
                     } else {
                         $this->session->set_flashdata('error', 'Gagal mengubah password');
                     }

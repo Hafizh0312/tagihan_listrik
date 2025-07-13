@@ -10,9 +10,9 @@
             <a href="<?= base_url('admin/penggunaan/add') ?>" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Tambah Penggunaan
             </a>
-            <a href="<?= base_url('admin/penggunaan/statistics') ?>" class="btn btn-info ms-2">
+            <!-- <a href="<?= base_url('admin/penggunaan/statistics') ?>" class="btn btn-info ms-2">
                 <i class="fas fa-chart-bar me-2"></i>Statistik
-            </a>
+            </a> -->
         </div>
     </div>
 
@@ -32,54 +32,18 @@
     <?php endif; ?>
 
     <!-- Search Form -->
-    <div class="card border-0 shadow mb-4">
-        <div class="card-body">
-            <form action="<?= base_url('admin/penggunaan/search') ?>" method="GET" class="row g-3">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" name="keyword" placeholder="Cari nama pelanggan atau nomor KWH..." value="<?= $this->input->get('keyword') ?>">
-                </div>
-                <div class="col-md-2">
-                    <select name="bulan" class="form-select">
-                        <option value="">Semua Bulan</option>
-                        <?php for ($i = 1; $i <= 12; $i++): ?>
-                            <option value="<?= $i ?>" <?= $this->input->get('bulan') == $i ? 'selected' : '' ?>>
-                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select name="tahun" class="form-select">
-                        <option value="">Semua Tahun</option>
-                        <?php for ($year = date('Y'); $year >= date('Y') - 5; $year--): ?>
-                            <option value="<?= $year ?>" <?= $this->input->get('tahun') == $year ? 'selected' : '' ?>>
-                                <?= $year ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search me-2"></i>Cari
-                    </button>
-                    <a href="<?= base_url('admin/penggunaan') ?>" class="btn btn-secondary">
-                        <i class="fas fa-refresh me-2"></i>Reset
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Dihapus: form search di atas tabel -->
 
     <!-- Penggunaan Table -->
     <div class="card border-0 shadow">
-        <div class="card-header bg-success text-white">
+        <div class="card-header bg-primary text-white">
             <h5 class="card-title mb-0">
                 <i class="fas fa-list me-2"></i>Daftar Penggunaan Listrik
             </h5>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table id="penggunaanTable" class="table table-hover table-bordered">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -94,6 +58,7 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
+                    <!-- Dihapus: tfoot search per kolom -->
                     <tbody>
                         <?php if (!empty($penggunaan)): ?>
                             <?php $no = 1; foreach ($penggunaan as $p): ?>

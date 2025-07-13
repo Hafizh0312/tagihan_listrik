@@ -80,7 +80,7 @@
                             <label for="id_tarif">Tarif Listrik <span class="text-danger">*</span></label>
                             <select class="form-control <?= form_error('id_tarif') ? 'is-invalid' : '' ?>" id="id_tarif" name="id_tarif" required>
                                 <option value="">-- Pilih Tarif --</option>
-                                <?php foreach ($tarif_list as $tarif): ?>
+                                <?php foreach ($tarifs as $tarif): ?>
                                     <option value="<?= $tarif->id_tarif ?>" <?= set_select('id_tarif', $tarif->id_tarif) ?>><?= $tarif->daya ?> VA - Rp <?= number_format($tarif->tarifperkwh, 0, ',', '.') ?>/KWH</option>
                                 <?php endforeach; ?>
                             </select>

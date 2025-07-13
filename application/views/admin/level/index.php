@@ -15,9 +15,9 @@
                 <a href="<?= base_url('admin/level/import') ?>" class="btn btn-success btn-sm">
                     <i class="fas fa-upload fa-sm"></i> Import CSV
                 </a>
-                <a href="<?= base_url('admin/level/statistics') ?>" class="btn btn-info btn-sm">
+                <!-- <a href="<?= base_url('admin/level/statistics') ?>" class="btn btn-info btn-sm">
                     <i class="fas fa-chart-bar fa-sm"></i> Statistik
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
@@ -87,7 +87,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Level Tertinggi</div>
+                                Tarif Tertinggi</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?= !empty($levels) ? max(array_column($levels, 'daya')) . ' VA' : '0 VA' ?>
                             </div>

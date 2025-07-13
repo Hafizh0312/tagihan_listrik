@@ -22,23 +22,26 @@ class Dashboard extends CI_Controller {
         $data['title'] = 'Dashboard Admin';
         $data['user'] = $this->session->userdata();
         
-        // Get statistics
+        // Statistik total
         $data['total_pelanggan'] = $this->Pelanggan_model->count_all();
         $data['total_penggunaan'] = $this->Penggunaan_model->count_all();
         $data['total_tagihan'] = $this->Tagihan_model->count_all();
         $data['total_tarif'] = $this->Tarif_model->count_all();
         
-        // Get recent data
+        // Data terbaru
         $data['recent_pelanggan'] = $this->Pelanggan_model->get_all();
-        $data['recent_penggunaan'] = $this->Penggunaan_model->get_all();
         $data['recent_tagihan'] = $this->Tagihan_model->get_all();
         
-        // Get bill statistics
-        $data['bill_stats'] = $this->Tagihan_model->get_statistics();
+        // Statistik tagihan bulanan untuk area chart
+        $data['statistik_tagihan'] = $this->Tagihan_model->get_monthly_statistics(6);
         
-        // Get usage statistics
-        $data['usage_stats'] = $this->Penggunaan_model->get_statistics();
-        
+        // Statistik status tagihan untuk pie chart
+        $stats = $this->Tagihan_model->get_statistics();
+        $data['status_tagihan'] = [
+            'paid_bills' => (int)($stats->paid_bills ?? 0),
+            'unpaid_bills' => (int)($stats->unpaid_bills ?? 0)
+        ];
+
         $this->load->view('admin/dashboard', $data);
     }
 

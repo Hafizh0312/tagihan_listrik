@@ -6,6 +6,7 @@
 
     <!-- Page Heading -->
 
+
     <!-- Flash Messages -->
     <?php if ($this->session->flashdata('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -246,3 +247,53 @@
 <!-- /.container-fluid -->
 
 <?php $this->load->view('admin/template/footer'); ?> 
+
+<!-- Chart.js untuk Statistik Tagihan dan Status Tagihan -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var statistikTagihan = <?= json_encode($statistik_tagihan ?? []) ?>;
+    var statusTagihan = <?= json_encode($status_tagihan ?? []) ?>;
+
+    // Area Chart (Statistik Tagihan per Bulan)
+    var ctxArea = document.getElementById('myAreaChart').getContext('2d');
+    var areaChart = new Chart(ctxArea, {
+        type: 'line',
+        data: {
+            labels: statistikTagihan.labels || [],
+            datasets: [{
+                label: 'Jumlah Tagihan',
+                data: statistikTagihan.data || [],
+                backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                borderColor: 'rgba(78, 115, 223, 1)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Pie Chart (Status Tagihan)
+    var ctxPie = document.getElementById('myPieChart').getContext('2d');
+    var pieChart = new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+            labels: ['Lunas', 'Belum Lunas'],
+            datasets: [{
+                data: [
+                    statusTagihan.paid_bills || 0,
+                    statusTagihan.unpaid_bills || 0
+                ],
+                backgroundColor: ['#1cc88a', '#e74a3b'],
+                hoverBackgroundColor: ['#17a673', '#be2617'],
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+</script> 

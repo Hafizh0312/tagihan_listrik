@@ -287,4 +287,24 @@ class Tagihan_model extends CI_Model {
         $this->db->limit($limit);
         return $this->db->get()->result();
     }
+
+    /**
+     * Get monthly bill statistics (jumlah tagihan per bulan, default 6 bulan terakhir)
+     */
+    public function get_monthly_statistics($months = 6) {
+        $this->db->select('bulan, tahun, COUNT(*) as jumlah');
+        $this->db->from('tagihan');
+        $this->db->group_by(['tahun', 'bulan']);
+        $this->db->order_by('tahun DESC, bulan DESC');
+        $this->db->limit($months);
+        $result = $this->db->get()->result();
+
+        $labels = [];
+        $data = [];
+        foreach (array_reverse($result) as $row) {
+            $labels[] = $row->bulan . '-' . $row->tahun;
+            $data[] = (int)$row->jumlah;
+        }
+        return ['labels' => $labels, 'data' => $data];
+    }
 } 
