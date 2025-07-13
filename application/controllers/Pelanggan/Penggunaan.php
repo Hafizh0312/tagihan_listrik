@@ -22,7 +22,7 @@ class Penggunaan extends CI_Controller {
         $data['title'] = 'Penggunaan Listrik';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -30,8 +30,8 @@ class Penggunaan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['penggunaan'] = $this->Penggunaan_model->get_penggunaan_by_pelanggan($pelanggan->pelanggan_id);
-        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->pelanggan_id);
+        $data['penggunaan'] = $this->Penggunaan_model->get_by_pelanggan($pelanggan->id_pelanggan);
+        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->id_pelanggan);
         
         $this->load->view('pelanggan/penggunaan/index', $data);
     }
@@ -47,17 +47,17 @@ class Penggunaan extends CI_Controller {
         $data['title'] = 'Detail Penggunaan Listrik';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
             redirect('pelanggan/penggunaan');
         }
         
-        $data['penggunaan'] = $this->Penggunaan_model->get_penggunaan_by_id($id);
+        $data['penggunaan'] = $this->Penggunaan_model->get_by_pelanggan($id);
         
         // Check if usage belongs to this customer
-        if (!$data['penggunaan'] || $data['penggunaan']->pelanggan_id != $pelanggan->pelanggan_id) {
+        if (!$data['penggunaan'] || $data['penggunaan']->id_pelanggan != $pelanggan->id_pelanggan) {
             $this->session->set_flashdata('error', 'Data penggunaan tidak ditemukan');
             redirect('pelanggan/penggunaan');
         }
@@ -72,7 +72,7 @@ class Penggunaan extends CI_Controller {
         $data['title'] = 'Statistik Penggunaan Listrik';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -80,16 +80,16 @@ class Penggunaan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->pelanggan_id);
+        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->id_pelanggan);
         
         // Get usage by year
         $current_year = date('Y');
-        $data['usage_by_year'] = $this->Penggunaan_model->get_usage_by_year($current_year, $pelanggan->pelanggan_id);
+        $data['usage_by_year'] = $this->Penggunaan_model->get_usage_by_year($current_year, $pelanggan->id_pelanggan);
         
         // Get usage by month for current year
         $data['monthly_usage'] = array();
         for ($month = 1; $month <= 12; $month++) {
-            $monthly_data = $this->Penggunaan_model->get_penggunaan_by_period($pelanggan->pelanggan_id, $month, $current_year);
+            $monthly_data = $this->Penggunaan_model->get_penggunaan_by_period($pelanggan->id_pelanggan, $month, $current_year);
             $data['monthly_usage'][$month] = $monthly_data ? ($monthly_data->meter_akhir - $monthly_data->meter_awal) : 0;
         }
         
@@ -107,7 +107,7 @@ class Penggunaan extends CI_Controller {
         $data['title'] = 'Penggunaan Listrik Tahun ' . $year;
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -116,7 +116,7 @@ class Penggunaan extends CI_Controller {
         
         $data['pelanggan'] = $pelanggan;
         $data['year'] = $year;
-        $data['usage_by_year'] = $this->Penggunaan_model->get_usage_by_year($year, $pelanggan->pelanggan_id);
+        $data['usage_by_year'] = $this->Penggunaan_model->get_usage_by_year($year, $pelanggan->id_pelanggan);
         
         // Get available years
         $data['available_years'] = array();
@@ -133,7 +133,7 @@ class Penggunaan extends CI_Controller {
      */
     public function export_pdf() {
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -141,8 +141,8 @@ class Penggunaan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['penggunaan'] = $this->Penggunaan_model->get_penggunaan_by_pelanggan($pelanggan->pelanggan_id);
-        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->pelanggan_id);
+        $data['penggunaan'] = $this->Penggunaan_model->get_by_pelanggan($pelanggan->id_pelanggan);
+        $data['stats'] = $this->Penggunaan_model->get_usage_statistics($pelanggan->id_pelanggan);
         
         // Load PDF library
         $this->load->library('pdf');

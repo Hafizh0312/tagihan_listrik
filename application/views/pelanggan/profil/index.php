@@ -66,7 +66,7 @@
             <div class="profile-avatar">
                 <i class="fas fa-user"></i>
             </div>
-            <h4 class="mb-0"><?= isset($pelanggan->nama) ? $pelanggan->nama : 'Pelanggan' ?></h4>
+            <h4 class="mb-0"><?= isset($pelanggan->nama_pelanggan) ? $pelanggan->nama_pelanggan : 'Pelanggan' ?></h4>
             <small>
                 <?php
                 if (isset($pelanggan->username)) {
@@ -84,7 +84,7 @@
             <table class="table table-borderless profile-info-table mb-0">
                 <tr>
                     <td width="35%"><strong>Nama</strong></td>
-                    <td><?= $pelanggan->nama ?></td>
+                    <td><?= $pelanggan->nama_pelanggan ?></td>
                 </tr>
                 <tr>
                     <td><strong>Username</strong></td>
@@ -110,7 +110,7 @@
                 </tr>
                 <tr>
                     <td><strong>Tarif/KWH</strong></td>
-                    <td><?= isset($pelanggan->tarif_per_kwh) ? 'Rp ' . number_format($pelanggan->tarif_per_kwh, 0, ',', '.') : '-' ?></td>
+                    <td><?= isset($pelanggan->tarifperkwh) ? 'Rp ' . number_format($pelanggan->tarifperkwh, 0, ',', '.') : '-' ?></td>
                 </tr>
             </table>
             <div class="mt-4 text-end">

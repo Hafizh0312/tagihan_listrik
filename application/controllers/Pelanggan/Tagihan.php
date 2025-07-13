@@ -22,7 +22,7 @@ class Tagihan extends CI_Controller {
         $data['title'] = 'Tagihan Listrik';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -30,8 +30,8 @@ class Tagihan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_pelanggan($pelanggan->pelanggan_id);
-        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->pelanggan_id);
+        $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_pelanggan($pelanggan->id_pelanggan);
+        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->id_pelanggan);
         
         $this->load->view('pelanggan/tagihan/index', $data);
     }
@@ -47,7 +47,7 @@ class Tagihan extends CI_Controller {
         $data['title'] = 'Detail Tagihan';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -57,7 +57,7 @@ class Tagihan extends CI_Controller {
         $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_id($id);
         
         // Check if bill belongs to this customer
-        if (!$data['tagihan'] || $data['tagihan']->pelanggan_id != $pelanggan->pelanggan_id) {
+        if (!$data['tagihan'] || $data['tagihan']->pelanggan_id != $pelanggan->id_pelanggan) {
             $this->session->set_flashdata('error', 'Tagihan tidak ditemukan');
             redirect('pelanggan/tagihan');
         }
@@ -76,7 +76,7 @@ class Tagihan extends CI_Controller {
         $data['title'] = 'Tagihan ' . $status;
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -91,7 +91,7 @@ class Tagihan extends CI_Controller {
         $data['tagihan'] = array();
         
         foreach ($all_bills as $bill) {
-            if ($bill->pelanggan_id == $pelanggan->pelanggan_id) {
+            if ($bill->pelanggan_id == $pelanggan->id_pelanggan) {
                 $data['tagihan'][] = $bill;
             }
         }
@@ -109,7 +109,7 @@ class Tagihan extends CI_Controller {
         $data['title'] = 'Tagihan per Periode';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -128,7 +128,7 @@ class Tagihan extends CI_Controller {
             $data['tagihan'] = array();
             
             foreach ($all_bills as $bill) {
-                if ($bill->pelanggan_id == $pelanggan->pelanggan_id) {
+                if ($bill->pelanggan_id == $pelanggan->id_pelanggan) {
                     $data['tagihan'][] = $bill;
                 }
             }
@@ -147,7 +147,7 @@ class Tagihan extends CI_Controller {
         $data['title'] = 'Statistik Tagihan';
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -155,14 +155,14 @@ class Tagihan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->pelanggan_id);
+        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->id_pelanggan);
         
         // Get unpaid bills for this customer
         $all_unpaid = $this->Tagihan_model->get_unpaid_bills();
         $data['unpaid_bills'] = array();
         
         foreach ($all_unpaid as $bill) {
-            if ($bill->pelanggan_id == $pelanggan->pelanggan_id) {
+            if ($bill->pelanggan_id == $pelanggan->id_pelanggan) {
                 $data['unpaid_bills'][] = $bill;
             }
         }
@@ -172,7 +172,7 @@ class Tagihan extends CI_Controller {
         $data['paid_bills'] = array();
         
         foreach ($all_paid as $bill) {
-            if ($bill->pelanggan_id == $pelanggan->pelanggan_id) {
+            if ($bill->pelanggan_id == $pelanggan->id_pelanggan) {
                 $data['paid_bills'][] = $bill;
             }
         }
@@ -189,7 +189,7 @@ class Tagihan extends CI_Controller {
         }
         
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -199,7 +199,7 @@ class Tagihan extends CI_Controller {
         $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_id($id);
         
         // Check if bill belongs to this customer
-        if (!$data['tagihan'] || $data['tagihan']->pelanggan_id != $pelanggan->pelanggan_id) {
+        if (!$data['tagihan'] || $data['tagihan']->pelanggan_id != $pelanggan->id_pelanggan) {
             $this->session->set_flashdata('error', 'Tagihan tidak ditemukan');
             redirect('pelanggan/tagihan');
         }
@@ -212,7 +212,7 @@ class Tagihan extends CI_Controller {
      */
     public function export_pdf() {
         // Get customer data
-        $pelanggan = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $pelanggan = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if (!$pelanggan) {
             $this->session->set_flashdata('error', 'Data pelanggan tidak ditemukan');
@@ -220,8 +220,8 @@ class Tagihan extends CI_Controller {
         }
         
         $data['pelanggan'] = $pelanggan;
-        $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_pelanggan($pelanggan->pelanggan_id);
-        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->pelanggan_id);
+        $data['tagihan'] = $this->Tagihan_model->get_tagihan_by_pelanggan($pelanggan->id_pelanggan);
+        $data['stats'] = $this->Tagihan_model->get_bill_statistics($pelanggan->id_pelanggan);
         
         // Load PDF library
         $this->load->library('pdf');

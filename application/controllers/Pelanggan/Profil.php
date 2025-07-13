@@ -20,8 +20,8 @@ class Profil extends CI_Controller {
      */
     public function index() {
         $data['title'] = 'Profil Saya';
-        $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-        $data['pelanggan'] = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $data['user'] = $this->User_model->get_pelanggan_by_id($this->session->userdata('user_id'));
+        $data['pelanggan'] = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         $this->load->view('pelanggan/profil/index', $data);
     }
@@ -31,8 +31,8 @@ class Profil extends CI_Controller {
      */
     public function edit() {
         $data['title'] = 'Edit Profil';
-        $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-        $data['pelanggan'] = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $data['user'] = $this->User_model->get_pelanggan_by_id($this->session->userdata('user_id'));
+        $data['pelanggan'] = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if ($this->input->post()) {
             $this->load->library('form_validation');
@@ -89,7 +89,7 @@ class Profil extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $this->session->set_flashdata('error', validation_errors());
             } else {
-                $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
+                $user = $this->User_model->get_pelanggan_by_id($this->session->userdata('user_id'));
                 
                 if (!$this->User_model->verify_password($this->input->post('current_password'), $user->password)) {
                     $this->session->set_flashdata('error', 'Password saat ini salah');

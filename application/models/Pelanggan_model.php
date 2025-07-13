@@ -202,4 +202,15 @@ class Pelanggan_model extends CI_Model {
         $this->db->where('pelanggan.id_tarif', $id_tarif);
         return $this->db->get()->result();
     }
+
+    /**
+     * Get customer by user ID (actually by id_pelanggan, since no id_user column)
+     */
+    public function get_by_user_id($user_id) {
+        $this->db->select('pelanggan.*, tarif.daya, tarif.tarifperkwh');
+        $this->db->from('pelanggan');
+        $this->db->join('tarif', 'tarif.id_tarif = pelanggan.id_tarif', 'left');
+        $this->db->where('pelanggan.id_pelanggan', $user_id); // FIXED: was id_user
+        return $this->db->get()->row();
+    }
 } 

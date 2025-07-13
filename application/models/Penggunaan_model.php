@@ -173,4 +173,21 @@ class Penggunaan_model extends CI_Model {
         
         return $stats;
     }
+
+    public function get_usage_statistics($id_pelanggan) {
+        $this->db->select('SUM(meter_ahir - meter_awal) as total_usage');
+        $this->db->from($this->table);
+        $this->db->where('id_pelanggan', $id_pelanggan);
+        $result = $this->db->get()->row();
+        return $result;
+    }
+
+    public function get_latest_usage($id_pelanggan) {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where('id_pelanggan', $id_pelanggan);
+        $this->db->order_by('tahun DESC, bulan DESC');
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
 } 

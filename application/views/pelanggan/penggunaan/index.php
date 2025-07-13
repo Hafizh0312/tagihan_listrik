@@ -73,11 +73,11 @@
                         <?php $no=1; foreach ($penggunaan as $row): ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= date('F', mktime(0,0,0,$row->bulan,1)) ?></td>
+                            <td><?= date('F', mktime(0,0,0,(int)$row->bulan,1)) ?></td>
                             <td><?= $row->tahun ?></td>
                             <td><?= number_format($row->meter_awal, 2, ',', '.') ?></td>
-                            <td><?= number_format($row->meter_akhir, 2, ',', '.') ?></td>
-                            <td><?= number_format($row->meter_akhir - $row->meter_awal, 2, ',', '.') ?></td>
+                            <td><?= number_format($row->meter_ahir, 2, ',', '.') ?></td>
+                            <td><?= number_format($row->meter_ahir - $row->meter_awal, 2, ',', '.') ?></td>
                             <td>Rp <?= isset($row->total_tagihan) ? number_format($row->total_tagihan, 0, ',', '.') : '-' ?></td>
                         </tr>
                         <?php endforeach; ?>

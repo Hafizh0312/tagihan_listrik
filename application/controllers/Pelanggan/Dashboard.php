@@ -9,7 +9,7 @@ class Dashboard extends CI_Controller {
         $this->load->library('session');
         $this->load->helper('url');
         
-        // Check if user is logged in and is customer
+        // Fix: Use 'role' instead of 'level' for pelanggan session check
         if (!$this->session->userdata('logged_in') || $this->session->userdata('role') != 'pelanggan') {
             redirect('auth');
         }
@@ -23,23 +23,23 @@ class Dashboard extends CI_Controller {
         $data['user'] = $this->session->userdata();
         
         // Get customer data
-        $data['pelanggan'] = $this->Pelanggan_model->get_pelanggan_by_user_id($this->session->userdata('user_id'));
+        $data['pelanggan'] = $this->Pelanggan_model->get_by_user_id($this->session->userdata('user_id'));
         
         if ($data['pelanggan']) {
             // Get usage statistics
-            $data['usage_stats'] = $this->Penggunaan_model->get_usage_statistics($data['pelanggan']->pelanggan_id);
+            $data['usage_stats'] = $this->Penggunaan_model->get_usage_statistics($data['pelanggan']->id_pelanggan);
             
             // Get bill statistics
-            $data['bill_stats'] = $this->Tagihan_model->get_bill_statistics($data['pelanggan']->pelanggan_id);
+            $data['bill_stats'] = $this->Tagihan_model->get_bill_statistics_for_customer($data['pelanggan']->id_pelanggan);
             
             // Get recent usage
-            $data['recent_usage'] = $this->Penggunaan_model->get_penggunaan_by_pelanggan($data['pelanggan']->pelanggan_id);
+            $data['recent_usage'] = $this->Penggunaan_model->get_by_pelanggan($data['pelanggan']->id_pelanggan);
             
             // Get recent bills
-            $data['recent_bills'] = $this->Tagihan_model->get_tagihan_by_pelanggan($data['pelanggan']->pelanggan_id);
+            $data['recent_bills'] = $this->Tagihan_model->get_recent_bills_for_customer($data['pelanggan']->id_pelanggan);
             
             // Get latest usage
-            $data['latest_usage'] = $this->Penggunaan_model->get_latest_usage($data['pelanggan']->pelanggan_id);
+            $data['latest_usage'] = $this->Penggunaan_model->get_latest_usage($data['pelanggan']->id_pelanggan);
         }
         
         $this->load->view('pelanggan/dashboard', $data);

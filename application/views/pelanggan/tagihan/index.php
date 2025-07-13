@@ -70,27 +70,22 @@
                             <th>Total KWH</th>
                             <th>Total Tagihan</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $no=1; foreach ($tagihan as $row): ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= date('F', mktime(0,0,0,$row->bulan,1)) ?></td>
+                            <td><?= date('F', mktime(0,0,0,(int)$row->bulan,1)) ?></td>
                             <td><?= $row->tahun ?></td>
-                            <td><?= number_format($row->total_kwh, 2, ',', '.') ?></td>
-                            <td>Rp <?= number_format($row->total_tagihan, 0, ',', '.') ?></td>
+                            <td><?= number_format($row->jumlah_meter, 2, ',', '.') ?></td>
+                            <td>Rp <?= number_format(isset($row->total_tagihan) ? $row->total_tagihan : ($row->jumlah_meter * $row->tarifperkwh), 0, ',', '.') ?></td>
                             <td>
                                 <?php if (strtolower($row->status) == 'lunas'): ?>
                                     <span class="badge bg-success badge-status">Lunas</span>
                                 <?php else: ?>
                                     <span class="badge bg-warning text-dark badge-status">Belum Lunas</span>
                                 <?php endif; ?>
-                            </td>
-                            <td>
-                                <a href="<?= base_url('pelanggan/tagihan/view/'.$row->tagihan_id) ?>" class="btn btn-sm btn-info" title="Lihat Detail">
-                                    <i class="fas fa-eye"></i>
                             </td>
                         </tr>
                         <?php endforeach; ?>

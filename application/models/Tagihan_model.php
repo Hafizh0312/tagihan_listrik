@@ -255,4 +255,36 @@ class Tagihan_model extends CI_Model {
         $this->db->where('status', 'belum_bayar');
         return $this->db->update('tagihan', ['status' => 'sudah_bayar']);
     }
+
+    /**
+     * Get bill statistics for customer
+     */
+    public function get_bill_statistics_for_customer($pelanggan_id) {
+        $this->db->select('COUNT(*) as total_bills,
+                          SUM(CASE WHEN status = "sudah_bayar" THEN 1 ELSE 0 END) as paid_bills,
+                          SUM(CASE WHEN status = "belum_bayar" THEN 1 ELSE 0 END) as unpaid_bills,
+                          SUM(jumlah_meter * tarif.tarifperkwh) as total_amount');
+        $this->db->from('tagihan');
+        $this->db->join('penggunaan', 'penggunaan.id_penggunaan = tagihan.id_penggunaan', 'left');
+        $this->db->join('pelanggan', 'pelanggan.id_pelanggan = penggunaan.id_pelanggan', 'left');
+        $this->db->join('tarif', 'tarif.id_tarif = pelanggan.id_tarif', 'left');
+        $this->db->where('penggunaan.id_pelanggan', $pelanggan_id);
+        return $this->db->get()->row();
+    }
+
+    /**
+     * Get recent bills for customer
+     */
+    public function get_recent_bills_for_customer($pelanggan_id, $limit = 5) {
+        $this->db->select('tagihan.*, penggunaan.bulan, penggunaan.tahun, 
+                          (tagihan.jumlah_meter * tarif.tarifperkwh) as total_tagihan');
+        $this->db->from('tagihan');
+        $this->db->join('penggunaan', 'penggunaan.id_penggunaan = tagihan.id_penggunaan', 'left');
+        $this->db->join('pelanggan', 'pelanggan.id_pelanggan = penggunaan.id_pelanggan', 'left');
+        $this->db->join('tarif', 'tarif.id_tarif = pelanggan.id_tarif', 'left');
+        $this->db->where('penggunaan.id_pelanggan', $pelanggan_id);
+        $this->db->order_by('tagihan.bulan DESC, tagihan.tahun DESC');
+        $this->db->limit($limit);
+        return $this->db->get()->result();
+    }
 } 
