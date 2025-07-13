@@ -6,11 +6,11 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Kelola Level Daya</h1>
+        <h1 class="h3 mb-0 text-gray-800">Kelola Tarif Daya</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <a href="<?= base_url('admin/level/add') ?>" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus fa-sm"></i> Tambah Level
+                    <i class="fas fa-plus fa-sm"></i> Tambah Tarif
                 </a>
                 <a href="<?= base_url('admin/level/import') ?>" class="btn btn-success btn-sm">
                     <i class="fas fa-upload fa-sm"></i> Import CSV
@@ -51,7 +51,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Level</div>
+                                Total Tarif</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($levels) ?></div>
                         </div>
                         <div class="col-auto">
@@ -68,7 +68,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Level Terendah</div>
+                                Tarif Terendah</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?= !empty($levels) ? min(array_column($levels, 'daya')) . ' VA' : '0 VA' ?>
                             </div>
@@ -124,7 +124,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                <i class="fas fa-list fa-sm"></i> Daftar Level Daya
+                <i class="fas fa-list fa-sm"></i> Daftar Tarif Daya
             </h6>
         </div>
         <div class="card-body">
@@ -133,7 +133,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Level</th>
+                            <th>Tarif</th>
                             <th>Daya (VA)</th>
                             <th>Tarif per KWH</th>
                             <th>Status</th>
@@ -146,7 +146,7 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td>
-                                    <strong>Level <?= $level->daya ?> VA</strong>
+                                    <strong><?= $level->daya ?> VA</strong>
                                 </td>
                                 <td>
                                     <span class="badge badge-info"><?= $level->daya ?> VA</span>
@@ -180,7 +180,7 @@
                             <tr>
                                 <td colspan="6" class="text-center text-muted">
                                     <i class="fas fa-cog fa-3x mb-3"></i>
-                                    <p>Belum ada data level daya</p>
+                                    <p>Belum ada data Tarif daya</p>
                                 </td>
                             </tr>
                         <?php endif; ?>
