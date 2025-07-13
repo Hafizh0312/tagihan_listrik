@@ -62,17 +62,9 @@ class Dashboard extends CI_Controller {
         $data['total_tagihan'] = $this->Tagihan_model->count_all();
         $data['tagihan_lunas'] = $this->Tagihan_model->count_by_status('sudah_bayar');
         $data['tagihan_belum_lunas'] = $this->Tagihan_model->count_by_status('belum_bayar');
-        
-        $this->load->view('admin/profile', $data);
-    }
 
-    /**
-     * Change password
-     */
-    public function change_password() {
-        $data['title'] = 'Ganti Password';
-        
-        if ($this->input->post()) {
+        // Proses update password langsung di halaman profil
+        if ($this->input->post('current_password') && $this->input->post('new_password') && $this->input->post('confirm_password')) {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('current_password', 'Password Saat Ini', 'required');
             $this->form_validation->set_rules('new_password', 'Password Baru', 'required|min_length[6]');
@@ -80,26 +72,27 @@ class Dashboard extends CI_Controller {
 
             if ($this->form_validation->run() == FALSE) {
                 $this->session->set_flashdata('error', validation_errors());
+                redirect('admin/dashboard/profile');
             } else {
                 $user = $this->User_model->get_by_id($this->session->userdata('user_id'));
-                
                 if (!$this->User_model->verify_password($this->input->post('current_password'), $user->password)) {
                     $this->session->set_flashdata('error', 'Password saat ini salah');
+                    redirect('admin/dashboard/profile');
                 } else {
                     $data_update = array(
                         'password' => $this->User_model->hash_password($this->input->post('new_password'))
                     );
-                    
                     if ($this->User_model->update($this->session->userdata('user_id'), $data_update)) {
                         $this->session->set_flashdata('success', 'Password berhasil diubah');
                     } else {
                         $this->session->set_flashdata('error', 'Gagal mengubah password');
                     }
+                    redirect('admin/dashboard/profile');
                 }
             }
         }
-        
-        $this->load->view('admin/change_password', $data);
+
+        $this->load->view('admin/profile', $data);
     }
 
     /**

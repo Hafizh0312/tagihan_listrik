@@ -124,7 +124,7 @@
                     <h6 class="m-0 font-weight-bold text-warning">Ubah Password</h6>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url('admin/dashboard/change_password') ?>" method="POST">
+                    <form action="<?= base_url('admin/dashboard/profile') ?>" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
